@@ -1,0 +1,13 @@
+{
+  "name": "mathclass",
+  "version": "1.0.0",
+  "description": "Mathematics class management application",
+  "workspaces": [
+    "app/*"
+  ],
+  "author": "Dmitrii Iasnikov",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/redux-logger": "^3.0.9"
+  }
+}
