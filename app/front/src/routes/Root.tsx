@@ -1,13 +1,22 @@
 import { Outlet, Link } from "react-router-dom"
 import { AuthLink } from "../features/auth/Routing"
 import { Navbar, Container, Nav } from "react-bootstrap"
+import { useAppDispatch } from "../app/hooks"
+import { problemsList } from "../features/problems/problemsActions"
+import { restore } from "../features/auth/authActions"
+import { useAuth } from "../features/auth/authHooks"
 
 export default function Root() {
+  const dispatch = useAppDispatch()
+  const user = useAuth()
+  // if (user) {
+  // dispatch(problemsList({ userId: user.id }))
+  // }
   return (
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="/about">Math class</Navbar.Brand>
+          <Navbar.Brand href="/problems">Math class</Navbar.Brand>
           <Nav className="me-auto">
             {/* <Nav.Item>
               <Link to={"/"} className="nav-link">

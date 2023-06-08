@@ -11,7 +11,7 @@ export class AssignmentsService {
     @InjectModel(Assignment.name) private assignmentModel: Model<Assignment>,
   ) {}
 
-  async create(dto: Partial<Assignment>): Promise<Assignment> {
+  async create(dto: Omit<Assignment, 'id'>): Promise<Assignment> {
     const assignemt = await this.assignmentModel.create(dto);
     return assignemt.save();
   }

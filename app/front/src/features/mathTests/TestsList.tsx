@@ -43,9 +43,7 @@ export function TestsList() {
       </Accordion.Item>
     ))
 
-  return !user ? (
-    <></>
-  ) : (
+  return user ? (
     <div className="container">
       <Row className="my-3">
         <Col>
@@ -62,6 +60,8 @@ export function TestsList() {
 
       <Accordion>{testsElements}</Accordion>
     </div>
+  ) : (
+    <></>
   )
 }
 

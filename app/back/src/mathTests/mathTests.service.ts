@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Test } from 'src/db/schemas/Test.schema';
+import { Test } from 'src/db/schemas/MathTest.schema';
 import { ProblemId } from 'src/problems';
 @Injectable()
 export class TestsService {
@@ -17,6 +17,7 @@ export class TestsService {
       await this.testModel.find({}, { _id: 1, caption: 1, problems: 1 })
     ).map((t) => ((t.id = t._id.toString()), t));
   }
+
   async getById(id: string): Promise<Test> {
     const item = await this.testModel.findById(id);
     if (item) {

@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap"
 import NewProblem from "./NewProblem"
 import { deleteMany, problemsList } from "./problemsActions"
-import { createTest } from "../tests/testsActions"
+import { createTest } from "../mathTests/testsActions"
 import { selectedProblems, hasSelected } from "./problemsSelectors"
 import { useAuth } from "../auth/authHooks"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
@@ -72,22 +72,27 @@ export function ProblemList() {
       <Row className="my-3">
         <Col>
           <ButtonGroup>
-            <Button variant="outline-primary" onClick={handleShow}>
+            <Button
+              variant="secondary"
+              onClick={handleShow}
+              disabled={selectionNotEmpty}
+            >
               Add
             </Button>
+
             <Button
               disabled={!selectionNotEmpty}
-              variant="outline-danger"
-              onClick={(_) => dispatch(deleteMany(selecedProblemsIds))}
-            >
-              Delete
-            </Button>
-            <Button
-              disabled={!selectionNotEmpty}
-              variant="outline-primary"
+              variant="secondary"
               onClick={handleShowNewTestDialog}
             >
               Create Test
+            </Button>
+            <Button
+              disabled={!selectionNotEmpty}
+              variant="secondary"
+              onClick={(_) => dispatch(deleteMany(selecedProblemsIds))}
+            >
+              Delete
             </Button>
           </ButtonGroup>
         </Col>

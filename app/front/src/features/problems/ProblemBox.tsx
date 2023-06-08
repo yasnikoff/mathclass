@@ -27,7 +27,7 @@ export function ProblemBox(props: ProblemBoxProps) {
   }
   const problemElem = problem ? <Problem data={problem}></Problem> : <div></div>
   return (
-    <div className="container my-3" style={{ minHeight: "25px" }}>
+    <div className="container my-4">
       <Row>
         <Col md={3} className={props.selectable ? "d-inline" : "d-none"}>
           <input

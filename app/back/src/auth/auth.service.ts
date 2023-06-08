@@ -12,11 +12,11 @@ export class AuthService {
   ) {}
 
   async signIn(username, pass) {
-    const user = await this.usersService.findOne(username);
+    const user = await this.usersService.getUserByUsername(username);
     if (!user) {
       throw new UnauthorizedException();
     }
-    if (!(await bcrypt.compare(pass, user?.hash))) {
+    if (!(await bcrypt.compare(pass, user?.passwordHash))) {
       throw new UnauthorizedException();
     }
     await ConfigModule.envVariablesLoaded;

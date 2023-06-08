@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import config from './config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ProblemsModule } from './problems/problems.module';
 import { AssignmentsModule } from './assignments/assignments.module';
-import { TestsModule } from './tests/tests.module';
+import { TestsModule } from './mathTests/mathtests.module';
 import Joi = require('joi');
 
 @Module({
@@ -17,6 +16,7 @@ import Joi = require('joi');
     UsersModule,
     ProblemsModule,
     ConfigModule.forRoot({
+      isGlobal: true,
       validationSchema: Joi.object({
         DB_CONNECTION_STRING: Joi.string().required(),
       }),

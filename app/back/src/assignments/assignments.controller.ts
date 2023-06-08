@@ -7,7 +7,7 @@ export class AssignmentsController {
   constructor(private service: AssignmentsService) {}
 
   @Post()
-  async create(@Body() body: Partial<Assignment>) {
+  async create(@Body() body: Omit<Assignment, 'id'>) {
     return this.service.create(body);
   }
 

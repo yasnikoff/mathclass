@@ -8,3 +8,12 @@ export const unauthorizedErrorMiddleware =
     }
     return next(action)
   }
+
+export const unauthorizedErrorInActionMiddleware =
+  (store: any) => (next: any) => (action: any) => {
+    if (action?.payload?.response?.status === 401) {
+      store.dispatch(userLogout())
+    }
+
+    return next(action)
+  }

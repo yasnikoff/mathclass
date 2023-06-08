@@ -37,13 +37,6 @@ export class ProblemsService {
     return { id };
   }
 
-  async deleteManyLocal(ids: ProblemId[]) {
-    const toDelete = new Set(ids);
-    this.problems = this.problems.filter(
-      (problem) => !toDelete.has(problem.id),
-    );
-    return ids;
-  }
   async deleteMany(ids: ProblemId[]) {
     await this.problemModel.deleteMany({ _id: { $in: ids } });
     return ids;

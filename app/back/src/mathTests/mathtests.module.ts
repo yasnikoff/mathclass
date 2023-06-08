@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { TestsService } from './tests.service';
-import { TestsController } from './tests.controller';
-import { Test, TestSchema } from 'src/db/schemas/Test.schema';
+import { TestsService } from './mathTests.service';
+import { TestsController } from './mathTests.controller';
+import { Test, TestSchema } from 'src/db/schemas/MathTest.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [

@@ -7,16 +7,17 @@ import {
   createRoutesFromElements,
   Route,
 } from "react-router-dom"
-import { useAppDispatch } from "./app/hooks"
-import { restore } from "./features/auth/authActions"
-import { UserProfile } from "./features/auth/UserProfile"
+
+import { restore as RestoreAuthState } from "./features/auth/authActions"
+import { UserProfile } from "./features/users/UserProfile"
 import ErrorPage from "./routes/Error"
 import Root from "./routes/Root"
 import Home from "./features/home/Home"
 import { About } from "./features/about/About"
 import ProblemList from "./features/problems/ProblemList"
-import TestsList from "./features/tests/TestsList"
+import TestsList from "./features/mathTests/TestsList"
 import LoginScreen from "./features/auth/Login"
+import { useAppDispatch } from "./app/hooks"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,8 +34,7 @@ const router = createBrowserRouter(
 
 function App() {
   const dispatch = useAppDispatch()
-  dispatch(restore())
-
+  dispatch(RestoreAuthState())
   return (
     <div className="">
       <RouterProvider router={router} />
