@@ -1,6 +1,6 @@
-import { Data, fromData, User, UserRole } from '../../utils';
+import { Data, fromData, UserDto, UserRole } from '../../utils';
 
-export const usersData: (Data<User> & { password: string })[] = [
+export const usersData: (Data<UserDto> & { password: string })[] = [
   {
     id: 1,
     username: 'john',
@@ -27,9 +27,9 @@ export const usersData: (Data<User> & { password: string })[] = [
 export default usersData
   .map((user) => ({ ...user }))
   .map((user) => (delete user.password, user))
-  .map((user) => fromData(User, user));
+  .map((user) => fromData(UserDto, user));
 
-export function getUserPassword(user: User) {
+export function getUserPassword(user: UserDto) {
   return usersData.find((userData) => userData.username === user?.username)
     ?.password;
 }

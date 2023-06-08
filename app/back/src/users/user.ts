@@ -7,7 +7,7 @@ export enum UserRole {
   Guest = 'Guest',
 }
 
-export class User {
+export class UserDto {
   @IsPositive()
   id: number;
 
@@ -20,3 +20,5 @@ export class User {
   @IsEnum(UserRole)
   role: UserRole;
 }
+
+export type NewUserDto = Omit<UserDto, 'id'> & { password: string };
