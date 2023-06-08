@@ -6,10 +6,10 @@ import {
   deleteMany,
   DeleteProblemResponse,
 } from "./problemsActions"
-import { ProblemId } from "."
+import { ProblemData } from "."
 
 export type ProblemListItem = {
-  id: ProblemId
+  problem: ProblemData
   selected: boolean
 }
 
@@ -42,7 +42,7 @@ const problemsSlice = createSlice({
     select: (state: ProblemsListState, action) => {
       const id = action.payload
       state.list.forEach((item) => {
-        if (item.id === id) {
+        if (item.problem.id === id) {
           item.selected = true
         }
       })
@@ -50,7 +50,7 @@ const problemsSlice = createSlice({
     deselect: (state: ProblemsListState, action) => {
       const id = action.payload
       state.list.forEach((item) => {
-        if (item.id === id) {
+        if (item.problem.id === id) {
           item.selected = false
         }
       })
@@ -69,7 +69,10 @@ const problemsSlice = createSlice({
       problemsList.fulfilled,
       (state: ProblemsListState, action) => {
         state.loading = false
-        state.list = action.payload.map((id) => ({ id, selected: false }))
+        state.list = action.payload.map((problem) => ({
+          problem,
+          selected: false,
+        }))
         state.success = true
       },
     )
@@ -88,7 +91,7 @@ const problemsSlice = createSlice({
     builder.addCase(
       createProblem.fulfilled,
       (state: ProblemsListState, action) => {
-        state.list.unshift({ id: action.payload.id, selected: false })
+        state.list.unshift({ problem: action.payload, selected: false })
       },
     )
 
@@ -99,7 +102,7 @@ const problemsSlice = createSlice({
         { payload }: { payload: DeleteProblemResponse },
       ) => {
         const foundIndex = state.list.findIndex(
-          (item) => item.id === payload?.id,
+          (item) => item.problem.id === payload?.id,
         )
         state.list.splice(foundIndex, 1)
       },

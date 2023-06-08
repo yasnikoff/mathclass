@@ -14,6 +14,9 @@ export const unauthorizedErrorInActionMiddleware =
     if (action?.payload?.response?.status === 401) {
       store.dispatch(userLogout())
     }
+    if (action.payload?.status === 401) {
+      store.dispatch(userLogout())
+    }
 
     return next(action)
   }

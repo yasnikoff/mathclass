@@ -41,8 +41,8 @@ export function ProblemList() {
   }
 
   useEffect(() => {
-    dispatch(problemsList(user ? { userId: user.id } : {}))
-  }, [dispatch, user])
+    dispatch(problemsList({}))
+  }, [dispatch])
 
   const selecedProblemsIds = useSelector(selectedProblems)
   const selectionNotEmpty = useSelector(hasSelected)
@@ -60,8 +60,8 @@ export function ProblemList() {
   const problemElements =
     problems &&
     problems.map((item) => (
-      <ListGroup.Item key={item.id}>
-        <ProblemBox problemListItem={item} selectable={true}></ProblemBox>
+      <ListGroup.Item key={item.problem.id}>
+        <ProblemBox item={item} selectable={true}></ProblemBox>
       </ListGroup.Item>
     ))
 

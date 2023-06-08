@@ -2,7 +2,7 @@ import api from "../../app/api"
 import { createAsyncThunk, createAction } from "@reduxjs/toolkit"
 import { ProblemId, ProblemData } from "."
 
-export type ProblemsListResponse = ProblemId[]
+export type ProblemsListResponse = ProblemData[]
 export type ProblemListRequest = { userId?: string }
 export const problemsList = createAsyncThunk<
   ProblemsListResponse,

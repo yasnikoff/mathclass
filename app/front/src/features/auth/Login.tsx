@@ -7,7 +7,9 @@ import Form from "react-bootstrap/Form"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { userLogin } from "./authActions"
 import { useNavigate } from "react-router-dom"
-import { Container, ListGroup } from "react-bootstrap"
+import { Container, ListGroup, InputGroup } from "react-bootstrap"
+import { testUsers } from "../users"
+import { TestUserData } from "../../components/TestUserData"
 
 type LoginData = {
   username: string
@@ -23,7 +25,7 @@ export function LoginScreen() {
 
   useEffect(() => {
     if (loggedIn) navigate("/profile")
-  }, [loggedIn])
+  }, [loggedIn, navigate])
 
   const submitForm = async (data: LoginData) => {
     dispatch(userLogin(data))
@@ -74,12 +76,9 @@ export function LoginScreen() {
           <Card.Header>Test user credentials</Card.Header>
           <Card.Body>
             <ListGroup>
-              <ListGroup.Item>
-                username : <b>john</b>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                password: <b>johnspass</b>
-              </ListGroup.Item>
+              {testUsers.map((user) => (
+                <TestUserData {...user}></TestUserData>
+              ))}
             </ListGroup>
           </Card.Body>
         </Card>

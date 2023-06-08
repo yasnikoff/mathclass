@@ -13,12 +13,17 @@ import { useAuth } from "../auth/authHooks"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { useSelector } from "react-redux"
 import ProblemBox from "../problems/ProblemBox"
+import { findById } from "../problems/problemsSelectors"
+import { AppState } from "../../app/store"
 
 export function TestsList() {
   const user = useAuth()
 
   const dispatch = useAppDispatch()
   const { list } = useAppSelector((state) => state.tests)
+  const { list: problemsListItems } = useAppSelector(
+    (state: AppState) => state.problems,
+  )
 
   useEffect(() => {
     dispatch(testsList())
@@ -32,10 +37,15 @@ export function TestsList() {
       <Accordion.Item key={item.id} eventKey={item.id}>
         <Accordion.Header>{item.caption}</Accordion.Header>
         <Accordion.Body>
-          {item.problems.map((problem) => (
+          {item.problems.map((problemId) => (
             <ProblemBox
-              key={problem}
-              problemListItem={{ id: problem, selected: false }}
+              key={problemId}
+              item={{
+                problem: problemsListItems
+                  .filter((item) => item.problem.id === problemId)
+                  .map((item) => item.problem)[0],
+                selected: false,
+              }}
               selectable={false}
             ></ProblemBox>
           ))}

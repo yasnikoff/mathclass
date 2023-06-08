@@ -38,7 +38,7 @@ export function UserProfile() {
                 <Form.Control
                   type="input"
                   value={data?.role}
-                  readOnly={true}
+                  readOnly
                 ></Form.Control>
               </Form.Group>
               <Form.Group>
@@ -46,7 +46,7 @@ export function UserProfile() {
                 <Form.Control
                   type="email"
                   value={data?.email}
-                  readOnly={true}
+                  readOnly
                 ></Form.Control>
               </Form.Group>
               <Button

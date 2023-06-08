@@ -14,9 +14,9 @@ export class ProblemsService {
     this.problems = mocks.map((data) => fromData(ProblemDto, data));
   }
 
-  async getLastProblems(): Promise<ProblemId[]> {
+  async getLastProblems(): Promise<Problem[]> {
     return (await this.problemModel.find().sort({ createdAt: -1 }).exec()).map(
-      (problem) => problem._id.toString(),
+      (problem) => ({ id: problem._id.toString(), math: problem.math }),
     );
   }
 

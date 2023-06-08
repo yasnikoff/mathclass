@@ -19,6 +19,9 @@ export const api = createApi({
     getUserByName: builder.query<User, string>({
       query: (username) => `users/${username}`,
     }),
+    getProblems: builder.query<User, string>({
+      query: (username) => `problems/`,
+    }),
   }),
 })
 

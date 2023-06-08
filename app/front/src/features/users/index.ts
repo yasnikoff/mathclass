@@ -7,3 +7,25 @@ export interface User {
   email: string
   avatar: string
 }
+
+export const testUsers: {
+  username: string
+  role: UserRole
+  password: string
+}[] = [
+  {
+    username: "john",
+    role: "Teacher" as UserRole,
+    password: "johnspass",
+  },
+  {
+    username: "maria",
+    role: "Student" as UserRole,
+    password: "mariaspass",
+  },
+  {
+    username: "anna",
+    role: "Student" as UserRole,
+    password: "annaspass",
+  },
+]

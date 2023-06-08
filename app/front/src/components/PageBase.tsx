@@ -1,11 +1,10 @@
 import { ReactNode } from "react"
-import { useNavigate } from "react-router-dom"
 import { PageError, Error } from "./Error"
 import { Loading } from "./Loading"
 import { LoginScreen } from "../features/auth/Login"
-import { useAppSelector } from "../app/hooks"
-import { AppState } from "../app/store"
 import { useAuth } from "../features/auth/authHooks"
+import api from "../app/api"
+import { Button } from "react-bootstrap"
 export type PageBaseProps = {
   children: ReactNode
   requrieAuth: boolean
@@ -13,8 +12,11 @@ export type PageBaseProps = {
   error: PageError
 }
 export function PageBase(props: PageBaseProps) {
-  
-    const { user } = useAuth()
+  async function getError() {
+    await api.get("nosuchpage")
+  }
+
+  const { user } = useAuth()
 
   if (props.isLoading) {
     return <Loading></Loading>
@@ -25,6 +27,9 @@ export function PageBase(props: PageBaseProps) {
   return (
     <>
       <Error error={props.error}></Error>
+      <Button variant="danger" onClick={getError}>
+        Simulate error
+      </Button>
       {props.children}
     </>
   )
