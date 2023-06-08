@@ -37,18 +37,22 @@ export function TestsList() {
       <Accordion.Item key={item.id} eventKey={item.id}>
         <Accordion.Header>{item.caption}</Accordion.Header>
         <Accordion.Body>
-          {item.problems.map((problemId) => (
-            <ProblemBox
-              key={problemId}
-              item={{
-                problem: problemsListItems
-                  .filter((item) => item.problem.id === problemId)
-                  .map((item) => item.problem)[0],
-                selected: false,
-              }}
-              selectable={false}
-            ></ProblemBox>
-          ))}
+          <ol>
+            {item.problems.map((problemId) => (
+              <li>
+                <ProblemBox
+                  key={problemId}
+                  item={{
+                    problem: problemsListItems
+                      .filter((item) => item.problem.id === problemId)
+                      .map((item) => item.problem)[0],
+                    selected: false,
+                  }}
+                  selectable={false}
+                ></ProblemBox>
+              </li>
+            ))}
+          </ol>
         </Accordion.Body>
       </Accordion.Item>
     ))
