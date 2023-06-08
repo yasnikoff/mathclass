@@ -1,5 +1,5 @@
 import { InputGroup, ListGroup, Form } from "react-bootstrap"
-import { UserRole } from "../features/users"
+import { UserRole } from "."
 
 export type TestUserDataProps = {
   username: string

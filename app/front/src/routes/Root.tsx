@@ -16,7 +16,7 @@ export default function Root() {
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="/problems">Math class</Navbar.Brand>
+          <Navbar.Brand href="/profile">Math class</Navbar.Brand>
           <Nav className="me-auto">
             {/* <Nav.Item>
               <Link to={"/"} className="nav-link">

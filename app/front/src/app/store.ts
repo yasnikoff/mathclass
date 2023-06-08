@@ -2,6 +2,7 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/dist/query"
 import logger from "redux-logger"
 import authReducer from "../features/auth/authSlice"
+import errorsReducer from "../features/errors/errorsSlice"
 import problemsReducer from "../features/problems/problemsSlice"
 import testsReducer from "../features/mathTests/testsSlice"
 import usersReducer from "../features/users/usersSlice"
@@ -9,11 +10,12 @@ import {
   unauthorizedErrorMiddleware,
   unauthorizedErrorInActionMiddleware,
 } from "../features/auth/middleware"
-import { api } from "./api2"
+import { rtkQueryApi } from "./api2"
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    [api.reducerPath]: api.reducer,
+    [rtkQueryApi.reducerPath]: rtkQueryApi.reducer,
+    errors: errorsReducer,
     users: usersReducer,
     problems: problemsReducer,
     tests: testsReducer,
@@ -22,7 +24,7 @@ export const store = configureStore({
     return getDefaultMiddleware()
       .prepend(unauthorizedErrorMiddleware)
       .concat(unauthorizedErrorInActionMiddleware)
-      .concat(api.middleware)
+      .concat(rtkQueryApi.middleware)
       .concat(logger)
   },
 })
@@ -38,3 +40,4 @@ export type AppThunk<ReturnType = any> = ThunkAction<
   Action<string>
 >
 export type AppState = ReturnType<typeof store.getState>
+export type StoreType = typeof store

@@ -1,28 +1,15 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { createApi } from "@reduxjs/toolkit/query/react"
 import type { User } from "../features/users"
-import { backendURL } from "./config"
-import { AppState } from "./store"
 
-export const api = createApi({
+import { axiosBaseQuery } from "./api"
+export const rtkQueryApi = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({
-    baseUrl: backendURL,
-    prepareHeaders: (headers, api) => {
-      headers.set(
-        "Authorization",
-        `Bearer ${(api.getState() as AppState).auth.access_token}`,
-      )
-      return headers
-    },
-  }),
+  baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
     getUserByName: builder.query<User, string>({
-      query: (username) => `users/${username}`,
-    }),
-    getProblems: builder.query<User, string>({
-      query: (username) => `problems/`,
+      query: (username) => ({ url: `users/${username}` }),
     }),
   }),
 })
 
-export const { useGetUserByNameQuery } = api
+export const { useGetUserByNameQuery } = rtkQueryApi

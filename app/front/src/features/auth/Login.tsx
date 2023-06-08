@@ -7,9 +7,10 @@ import Form from "react-bootstrap/Form"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { userLogin } from "./authActions"
 import { useNavigate } from "react-router-dom"
-import { Container, ListGroup, InputGroup } from "react-bootstrap"
+import { Container, ListGroup } from "react-bootstrap"
 import { testUsers } from "../users"
-import { TestUserData } from "../../components/TestUserData"
+import { TestUserData } from "../users/TestUserData"
+import { problemsList } from "../problems/problemsActions"
 
 type LoginData = {
   username: string
@@ -19,7 +20,9 @@ type LoginData = {
 export function LoginScreen() {
   const { register, handleSubmit } = useForm<LoginData>()
 
-  const { loading, loggedIn, success } = useAppSelector((state) => state.auth)
+  const { loading, loggedIn, success, user } = useAppSelector(
+    (state) => state.auth,
+  )
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -28,7 +31,8 @@ export function LoginScreen() {
   }, [loggedIn, navigate])
 
   const submitForm = async (data: LoginData) => {
-    dispatch(userLogin(data))
+    await dispatch(userLogin(data))
+    await dispatch(problemsList({ userId: user?.id }))
   }
 
   return (

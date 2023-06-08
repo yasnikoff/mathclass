@@ -1,8 +1,11 @@
-import axios from "axios"
+import axios, { AxiosRequestConfig, AxiosError } from "axios"
 import { store } from "./store"
 import { backendURL } from "./config"
 import { unauthorizedError } from "../utils/errors"
 import { userLogout } from "../features/auth/authActions"
+import { setErrorMessage } from "../features/errors/errorsActions"
+import { BaseQueryFn } from "@reduxjs/toolkit/query"
+
 const api = axios.create({
   baseURL: backendURL,
 })
@@ -30,8 +33,35 @@ api.interceptors.response.use(
       store.dispatch(userLogout())
       return Promise.reject(unauthorizedError())
     }
+    store.dispatch(setErrorMessage(error.response.statusText))
     return Promise.reject(error)
   },
 )
+
+export const axiosBaseQuery =
+  (): BaseQueryFn<
+    {
+      url: string
+      method?: AxiosRequestConfig["method"]
+      data?: AxiosRequestConfig["data"]
+      params?: AxiosRequestConfig["params"]
+    },
+    unknown,
+    unknown
+  > =>
+  async ({ url, method = "get", data, params }) => {
+    try {
+      const result = await api({ url, method, data, params })
+      return { data: result.data }
+    } catch (axiosError) {
+      let err = axiosError as AxiosError
+      return {
+        error: {
+          status: err.response?.status,
+          data: err.response?.data || err.message,
+        },
+      }
+    }
+  }
 
 export default api
