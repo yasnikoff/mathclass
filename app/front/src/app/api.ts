@@ -29,11 +29,17 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (resp) => resp,
   (error) => {
-    if (error.response.status === 401) {
-      store.dispatch(userLogout())
-      return Promise.reject(unauthorizedError())
+    console.dir(error)
+    if (error instanceof AxiosError) {
+      if (error?.response?.status === 401) {
+        store.dispatch(userLogout())
+        return Promise.reject(unauthorizedError())
+      }
+      store.dispatch(
+        setErrorMessage(error?.response?.data?.message || "unknown error"),
+      )
     }
-    store.dispatch(setErrorMessage(error.response.statusText))
+
     return Promise.reject(error)
   },
 )
