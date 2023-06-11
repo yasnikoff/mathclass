@@ -21,6 +21,16 @@ export class UsersService {
     userData: NewUserDto,
     options = { withPasswordHash: false },
   ): Promise<Omit<User, 'passwordHash'> & { passwordHash?: string }> {
+    if (userData?.username?.length < MIN_USERNAME_LENGTH) {
+      throw new UsernameTooShortError(userData.username);
+    }
+
+    if (userData?.password?.length < MIN_PASSWORD_LENGTH) {
+      throw new PasswordError(
+        `password must be at least ${MIN_PASSWORD_LENGTH} characters long`,
+      );
+    }
+
     const existingUser = await this.userModel
       .findOne({ username: userData.username })
       .exec();
@@ -52,8 +62,26 @@ export class UsernameError extends Error {
   }
 }
 
+export const MIN_USERNAME_LENGTH = 3;
+
+export class UsernameTooShortError extends UsernameError {
+  get message() {
+    return `${
+      super.message
+    }: username must be at least ${MIN_USERNAME_LENGTH} characters long`;
+  }
+}
+
 export class UsernameAlreadyInUseError extends UsernameError {
   get message(): string {
     return `${super.message}: username already in use`;
+  }
+}
+
+export const MIN_PASSWORD_LENGTH = 5;
+
+export class PasswordError extends Error {
+  constructor(reason: string) {
+    super(`Invalid password: ${reason}`);
   }
 }

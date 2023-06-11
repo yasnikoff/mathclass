@@ -15,6 +15,8 @@ import {
   UsersService,
   UsernameAlreadyInUseError,
   UsernameError,
+  UsernameTooShortError,
+  PasswordError,
 } from './users.service';
 
 @UseGuards(AuthGuard)
@@ -42,6 +44,9 @@ export class UsersController {
         throw new HttpException(e.message, HttpStatus.CONFLICT);
       if (e instanceof UsernameError)
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      if (e instanceof UsernameTooShortError || e instanceof PasswordError) {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      }
       throw e;
     }
   }
