@@ -33,11 +33,11 @@ export default function Root() {
                 Tests
               </AuthLink>
             </Nav.Item>
-            {/* <Nav.Item>
-              <Link to={`about`} className="nav-link">
+            <Nav.Item>
+              <Link to={`/`} className="nav-link">
                 About
               </Link>
-            </Nav.Item> */}
+            </Nav.Item>
             <Nav.Item>
               <AuthLink to={`profile`} className="nav-link">
                 Profile

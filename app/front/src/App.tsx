@@ -22,7 +22,7 @@ import { useAppDispatch } from "./app/hooks"
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />} errorElement={<ErrorPage />}>
-      {/* <Route element={<Home />} path="home" />, */}
+      <Route element={<About />} path="/" />,
       <Route element={<ProblemList />} path="problems" />,
       <Route element={<TestsList />} path="tests" />,
       {/* <Route element={<About />} path="about" /> */}
