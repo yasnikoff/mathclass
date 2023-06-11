@@ -58,6 +58,30 @@ describe('UsersService', () => {
       });
     });
 
+    describe('called with invalid password', () => {
+      it.each([
+        { description: 'password id too short', password: '123' },
+        { description: 'password is empty', password: '' },
+        { description: 'password is too long', password: '1'.repeat(33) },
+      ])('should throw when $description', async ({ password }) => {
+        expect.assertions(1);
+        await expect(
+          service.createUser({ ...newUserDto, password }),
+        ).rejects.toThrowError('password');
+      });
+    });
+
+    describe('called without user role', () => {
+      it('should throw', async () => {
+        expect.assertions(1);
+        await expect(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-expect-error
+          service.createUser({ ...newUserDto, role: '' }),
+        ).rejects.toThrowError('user role');
+      });
+    });
+
     describe('called with valid unused username', () => {
       let result: Awaited<ReturnType<typeof service.createUser>>;
 

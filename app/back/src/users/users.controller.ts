@@ -14,9 +14,7 @@ import { NewUserDto } from './user';
 import {
   UsersService,
   UsernameAlreadyInUseError,
-  UsernameError,
-  UsernameTooShortError,
-  PasswordError,
+  SignUpError,
 } from './users.service';
 
 @UseGuards(AuthGuard)
@@ -42,9 +40,7 @@ export class UsersController {
     } catch (e) {
       if (e instanceof UsernameAlreadyInUseError)
         throw new HttpException(e.message, HttpStatus.CONFLICT);
-      if (e instanceof UsernameError)
-        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
-      if (e instanceof UsernameTooShortError || e instanceof PasswordError) {
+      if (e instanceof SignUpError) {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       }
       throw e;

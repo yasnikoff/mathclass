@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/db/schemas/User.schema';
-import { NewUserDto } from './user';
+import { NewUserDto, UserDto } from './user';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
+import { Data, validate } from 'src/utils/types';
 
 @Injectable()
 export class UsersService {
@@ -18,17 +19,15 @@ export class UsersService {
   }
 
   async createUser(
-    userData: NewUserDto,
+    userData: Data<NewUserDto>,
     options = { withPasswordHash: false },
-  ): Promise<Omit<User, 'passwordHash'> & { passwordHash?: string }> {
-    if (userData?.username?.length < MIN_USERNAME_LENGTH) {
-      throw new UsernameTooShortError(userData.username);
-    }
+  ): Promise<Omit<UserDto, 'passwordHash'> & { passwordHash?: string }> {
+    const { password, ...commonData } = userData;
 
-    if (userData?.password?.length < MIN_PASSWORD_LENGTH) {
-      throw new PasswordError(
-        `password must be at least ${MIN_PASSWORD_LENGTH} characters long`,
-      );
+    try {
+      await validate(NewUserDto, userData);
+    } catch (e) {
+      throw new SignUpError(e as Error);
     }
 
     const existingUser = await this.userModel
@@ -38,7 +37,6 @@ export class UsersService {
       throw new UsernameAlreadyInUseError(userData.username);
     }
 
-    const { password, ...commonData } = userData;
     const passwordHash = await bcrypt.hash(password, 10);
 
     const createdUser = await this.userModel.create({
@@ -53,35 +51,18 @@ export class UsersService {
   }
 }
 
-export class UsernameError extends Error {
-  constructor(public readonly username: string) {
-    super();
-  }
-  get message(): string {
-    return `Error with username '${this.username}'`;
-  }
-}
-
-export const MIN_USERNAME_LENGTH = 3;
-
-export class UsernameTooShortError extends UsernameError {
-  get message() {
-    return `${
-      super.message
-    }: username must be at least ${MIN_USERNAME_LENGTH} characters long`;
+export class SignUpError extends Error {
+  constructor(cause: string | Error) {
+    super(
+      `Can't create new user. ${
+        cause instanceof Error ? cause.message : cause
+      }`,
+    );
   }
 }
 
-export class UsernameAlreadyInUseError extends UsernameError {
+export class UsernameAlreadyInUseError extends Error {
   get message(): string {
     return `${super.message}: username already in use`;
-  }
-}
-
-export const MIN_PASSWORD_LENGTH = 5;
-
-export class PasswordError extends Error {
-  constructor(reason: string) {
-    super(`Invalid password: ${reason}`);
   }
 }

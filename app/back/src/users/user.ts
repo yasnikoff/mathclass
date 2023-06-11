@@ -1,27 +1,52 @@
-import { IsString, IsEnum, IsEmail, IsPositive } from 'class-validator';
+import {
+  IsString,
+  IsEnum,
+  IsEmail,
+  MinLength,
+  MaxLength,
+  Length,
+  IsOptional,
+} from 'class-validator';
 
 export enum UserRole {
-  Admin = 'Admin',
   Student = 'Student',
   Teacher = 'Teacher',
-  Guest = 'Guest',
 }
 
-export class UserDto {
-  @IsPositive()
-  id: string;
-
+export class BaseUserDto {
   @IsString()
+  @MinLength(5, {
+    message: 'username must be at least $constraint1 characters long',
+  })
+  @MaxLength(15, {
+    message: 'username must be at most $constraint1 characters long',
+  })
   username: string;
 
+  @IsOptional()
   @IsEmail()
-  email: string;
+  email?: string;
 
-  @IsEnum(UserRole)
+  @IsEnum(UserRole, { message: 'user role must be either Teacher or Student' })
   role: UserRole;
 
+  @IsOptional()
   @IsString()
-  avatar: string;
+  avatar?: string;
 }
 
-export type NewUserDto = Omit<UserDto, 'id'> & { password: string };
+export class UserDto extends BaseUserDto {
+  @Length(12)
+  id: string;
+}
+
+export class NewUserDto extends BaseUserDto {
+  @IsString()
+  @MinLength(5, {
+    message: 'password must be at least $constraint1 characters long',
+  })
+  @MaxLength(32, {
+    message: 'password must be at most $constraint1 characters long',
+  })
+  password: string;
+}
