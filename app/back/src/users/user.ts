@@ -9,7 +9,7 @@ export enum UserRole {
 
 export class UserDto {
   @IsPositive()
-  id: number;
+  id: string;
 
   @IsString()
   username: string;
@@ -19,6 +19,9 @@ export class UserDto {
 
   @IsEnum(UserRole)
   role: UserRole;
+
+  @IsString()
+  avatar: string;
 }
 
 export type NewUserDto = Omit<UserDto, 'id'> & { password: string };
