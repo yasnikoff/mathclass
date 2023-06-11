@@ -15,7 +15,7 @@ export enum UserRole {
 
 export class BaseUserDto {
   @IsString()
-  @MinLength(5, {
+  @MinLength(3, {
     message: 'username must be at least $constraint1 characters long',
   })
   @MaxLength(15, {
