@@ -11,7 +11,7 @@ export function Avatar(props: AvatarProps) {
     xmlns="http://www.w3.org/2000/svg"
     width="120"
     height="120"
-    fill="currentColor"
+    fill="#404040"
     className="bi bi-file-person-fill"
     viewBox="0 0 16 16"
   >
