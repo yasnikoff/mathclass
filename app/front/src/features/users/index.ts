@@ -4,8 +4,8 @@ export interface User {
   id: string
   username: string
   role: UserRole
-  email: string
-  avatar: string
+  email?: string
+  avatar?: string
 }
 
 export const testUsers: {
