@@ -62,7 +62,7 @@ export class SignUpError extends Error {
 }
 
 export class UsernameAlreadyInUseError extends Error {
-  get message(): string {
-    return `${super.message}: username already in use`;
+  constructor(username: string) {
+    super(`username '${username}' already used`);
   }
 }
