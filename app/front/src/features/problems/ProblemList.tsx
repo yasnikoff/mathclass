@@ -13,13 +13,13 @@ import NewProblem from "./NewProblem"
 import { deleteMany, problemsList } from "./problemsActions"
 import { createTest } from "../mathTests/testsActions"
 import { selectedProblems, hasSelected } from "./problemsSelectors"
-import { useAuth } from "../auth/authHooks"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { PageBase } from "../../components/PageBase"
 
 export function ProblemList() {
-  const user = useAuth()
+
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -65,69 +65,69 @@ export function ProblemList() {
       </ListGroup.Item>
     ))
 
-  return !user ? (
-    <></>
-  ) : (
-    <div className="container">
-      <Row className="my-3">
-        <Col>
-          <ButtonGroup>
-            <Button
-              variant="secondary"
-              onClick={handleShow}
-              disabled={selectionNotEmpty}
-            >
-              Add
-            </Button>
+  return (
+    <PageBase requrieAuth={true} roles={["Teacher"]}>
+      <div className="container">
+        <Row className="my-3">
+          <Col>
+            <ButtonGroup>
+              <Button
+                variant="secondary"
+                onClick={handleShow}
+                disabled={selectionNotEmpty}
+              >
+                Add
+              </Button>
 
-            <Button
-              disabled={!selectionNotEmpty}
-              variant="secondary"
-              onClick={handleShowNewTestDialog}
-            >
-              Create Test
-            </Button>
-            <Button
-              disabled={!selectionNotEmpty}
-              variant="secondary"
-              onClick={(_) => dispatch(deleteMany(selecedProblemsIds))}
-            >
-              Delete
-            </Button>
-          </ButtonGroup>
-        </Col>
-      </Row>
-      {newProblemBox}
+              <Button
+                disabled={!selectionNotEmpty}
+                variant="secondary"
+                onClick={handleShowNewTestDialog}
+              >
+                Create Test
+              </Button>
+              <Button
+                disabled={!selectionNotEmpty}
+                variant="secondary"
+                onClick={(_) => dispatch(deleteMany(selecedProblemsIds))}
+              >
+                Delete
+              </Button>
+            </ButtonGroup>
+          </Col>
+        </Row>
+        {newProblemBox}
 
-      <ListGroup>{problemElements}</ListGroup>
+        <ListGroup>{problemElements}</ListGroup>
 
-      <div>
-        <Modal show={showNewTestDialog} onHide={handleCloseNewTestDialog}>
-          <Modal.Header closeButton>
-            <Modal.Title>New Test</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Label>
-                Test name:{" "}
-                <Form.Control
-                  type="text"
-                  onChange={(e) => setNewTestName(e.target.value)}
-                ></Form.Control>
-              </Form.Label>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseNewTestDialog}>
-              Cancel
-            </Button>
-            <Button variant="primary" onClick={createNewTest}>
-              Create
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <div>
+          <Modal show={showNewTestDialog} onHide={handleCloseNewTestDialog}>
+            <Modal.Header closeButton>
+              <Modal.Title>New Test</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Label>
+                  Test name:{" "}
+                  <Form.Control
+                    type="text"
+                    onChange={(e) => setNewTestName(e.target.value)}
+                  ></Form.Control>
+                </Form.Label>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseNewTestDialog}>
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={createNewTest}>
+                Create
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
       </div>
-    </div>
+    </PageBase>
   )
 }
 

@@ -1,5 +1,6 @@
 import { SerializedError, createSlice } from "@reduxjs/toolkit"
 import { userLogin, LoginResponse } from "./authActions"
+import { UserRole } from "../users"
 
 const localStorageSection = "auth"
 type SavedState = {
@@ -33,6 +34,7 @@ export type AuthState = {
   user?: {
     username: string
     id: string
+    role: UserRole
   }
   error?: SerializedError
   success: boolean

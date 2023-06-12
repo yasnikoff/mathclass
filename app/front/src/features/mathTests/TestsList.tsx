@@ -13,11 +13,10 @@ import { useAuth } from "../auth/authHooks"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { useSelector } from "react-redux"
 import ProblemBox from "../problems/ProblemBox"
-import { findById } from "../problems/problemsSelectors"
+import { PageBase } from "../../components/PageBase"
 import { AppState } from "../../app/store"
 
 export function TestsList() {
-  const user = useAuth()
 
   const dispatch = useAppDispatch()
   const { list } = useAppSelector((state) => state.tests)
@@ -57,25 +56,25 @@ export function TestsList() {
       </Accordion.Item>
     ))
 
-  return user ? (
-    <div className="container">
-      <Row className="my-3">
-        <Col>
-          <ButtonGroup>
-            {/* <Button
+  return (
+    <PageBase requrieAuth={true} roles={["Teacher"]}>
+      <div className="container">
+        <Row className="my-3">
+          <Col>
+            <ButtonGroup>
+              {/* <Button
               variant="outline-danger"
               onClick={(_e) => dispatch(deleteMany(selecedTestsIds))}
             >
               Delete
             </Button> */}
-          </ButtonGroup>
-        </Col>
-      </Row>
+            </ButtonGroup>
+          </Col>
+        </Row>
 
-      <Accordion>{testsElements}</Accordion>
-    </div>
-  ) : (
-    <></>
+        <Accordion>{testsElements}</Accordion>
+      </div>
+    </PageBase>
   )
 }
 
