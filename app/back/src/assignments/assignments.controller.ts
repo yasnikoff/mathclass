@@ -1,19 +1,15 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { AssignmentsService } from './assignments.service';
-import { Assignment } from 'src/db/schemas/Assignment.schema';
+import { Assignment, NewAssignment } from 'src/db/schemas/Assignment.schema';
 
 @Controller('assignments')
 export class AssignmentsController {
   constructor(private service: AssignmentsService) {}
 
-  @Post()
-  async create(@Body() body: Omit<Assignment, 'id'>) {
-    return this.service.create(body);
-  }
-
   @Get()
-  async getAll() {
-    return this.service.getAll();
+  async getAll(@Query('student') studentId) {
+    console.log(studentId)
+    return this.service.getAll(studentId || undefined);
   }
   @Get('foruser/:userId')
   async getAllForUser(@Param() params) {
@@ -23,5 +19,10 @@ export class AssignmentsController {
   @Get(':id')
   async getById(@Param() params) {
     return this.service.getById(params?.id);
+  }
+
+  @Put()
+  async create(@Body() data: NewAssignment) {
+    return this.service.create(data);
   }
 }
