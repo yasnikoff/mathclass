@@ -12,6 +12,9 @@ export const rtkQueryApi = createApi({
     getUserByName: builder.query<User, string>({
       query: (username) => ({ url: `users/${username}` }),
     }),
+    getAllStudents: builder.query<User[], void>({
+      query: () => ({ url: `users?role=Student` }),
+    }),
   }),
 })
 

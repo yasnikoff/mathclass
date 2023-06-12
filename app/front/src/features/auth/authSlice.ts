@@ -8,6 +8,7 @@ type SavedState = {
   user?: {
     username: string
     id: string
+    role: UserRole
   }
 }
 function saveState(data: SavedState) {
