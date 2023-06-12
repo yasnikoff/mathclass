@@ -6,6 +6,7 @@ import Card from "react-bootstrap/Card"
 import Form from "react-bootstrap/Form"
 import { Row, Col } from "react-bootstrap"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { PageBase } from "../../components/PageBase"
 import { userLogin } from "./authActions"
 import { useNavigate } from "react-router-dom"
 import { Container, ListGroup } from "react-bootstrap"
@@ -41,7 +42,7 @@ export function LoginScreen() {
   }
 
   return (
-    <>
+    <PageBase requrieAuth={false}>
       <Container style={{ width: "500px" }}>
         <Card className="mx-auto mt-5">
           <Card.Body>
@@ -101,7 +102,7 @@ export function LoginScreen() {
           </Card.Body>
         </Card>
       </Container>
-    </>
+    </PageBase>
   )
 }
 export default LoginScreen
