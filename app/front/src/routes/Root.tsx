@@ -24,12 +24,16 @@ export default function Root() {
               </Link>
             </Nav.Item> */}
             <Nav.Item>
-              <AuthLink to={`problems`} className="nav-link">
+              <AuthLink
+                to={`problems`}
+                roles={["Teacher"]}
+                className="nav-link"
+              >
                 Problems
               </AuthLink>
             </Nav.Item>
             <Nav.Item>
-              <AuthLink to={`tests`} className="nav-link">
+              <AuthLink to={`tests`} roles={["Teacher"]} className="nav-link">
                 Tests
               </AuthLink>
             </Nav.Item>
