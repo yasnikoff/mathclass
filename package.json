@@ -6,8 +6,5 @@
     "app/*"
   ],
   "author": "Dmitrii Iasnikov",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/redux-logger": "^3.0.9"
-  }
+  "license": "ISC"
 }
