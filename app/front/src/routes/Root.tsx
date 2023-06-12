@@ -24,6 +24,15 @@ export default function Root() {
               </AuthLink>
             </Nav.Item>
             <Nav.Item>
+              <AuthLink
+                to={`assignments`}
+                roles={["Teacher", "Student"]}
+                className="nav-link"
+              >
+                Assignments
+              </AuthLink>
+            </Nav.Item>
+            <Nav.Item>
               <Link to={`/`} className="nav-link">
                 About
               </Link>

@@ -7,6 +7,7 @@ import {
   ListGroup,
   Accordion,
 } from "react-bootstrap"
+import { useNavigate } from "react-router-dom"
 import { deleteMany, testsList } from "./testsActions"
 import { selectedTests } from "./testsSelectors"
 import { useAuth } from "../auth/authHooks"
@@ -16,10 +17,18 @@ import ProblemBox from "../problems/ProblemBox"
 import { PageBase } from "../../components/PageBase"
 import { AppState } from "../../app/store"
 import { problemsList } from "../problems/problemsActions"
+import { setErrorMessage } from "../errors/errorsActions"
+import {
+  useLazyCreateAssignmentQuery,
+  useGetAllStudentsQuery,
+} from "../../app/api2"
+import { NewAssignment } from "../assignments"
+import { TestData } from "."
+
 
 export function TestsList() {
-
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const { list } = useAppSelector((state) => state.tests)
   const { list: problemsListItems } = useAppSelector(
     (state: AppState) => state.problems,
@@ -31,6 +40,31 @@ export function TestsList() {
   }, [dispatch])
 
   const selecedTestsIds = useSelector(selectedTests)
+  const { user } = useAuth()
+  const {
+    data: students,
+    error: studentsError,
+    isLoading: isStudentsLoading,
+  } = useGetAllStudentsQuery()
+
+  const [trigger, result] = useLazyCreateAssignmentQuery()
+
+  const createAssignments = async (mathTest: TestData) => {
+    if (students && user) {
+      const newAssignment: NewAssignment = {
+        caption: mathTest.caption,
+        students: students.map((student) => student._id),
+        teacher: user.id,
+        test: mathTest._id,
+      }
+      try {
+        await trigger(newAssignment).unwrap()
+        navigate("/assignments")
+      } catch (e) {
+        dispatch(setErrorMessage((e as Error)?.message || "unkown error"))
+      }
+    }
+  }
 
   const testsElements =
     list &&
@@ -38,22 +72,29 @@ export function TestsList() {
       <Accordion.Item key={item.id} eventKey={item.id}>
         <Accordion.Header>{item.caption}</Accordion.Header>
         <Accordion.Body>
-          <ol>
-            {item.problems.map((problemId) => (
-              <li>
-                <ProblemBox
-                  key={problemId}
-                  item={{
-                    problem: problemsListItems
-                      .filter((item) => item.problem.id === problemId)
-                      .map((item) => item.problem)[0],
-                    selected: false,
-                  }}
-                  selectable={false}
-                ></ProblemBox>
-              </li>
-            ))}
-          </ol>
+          <Row>
+            <ol>
+              {item.problems.map((problemId) => (
+                <li>
+                  <ProblemBox
+                    key={problemId}
+                    item={{
+                      problem: problemsListItems
+                        .filter((item) => item.problem.id === problemId)
+                        .map((item) => item.problem)[0],
+                      selected: false,
+                    }}
+                    selectable={false}
+                  ></ProblemBox>
+                </li>
+              ))}
+            </ol>
+          </Row>
+          <Row>
+            <Button onClick={(e) => createAssignments(item)}>
+              Send to students
+            </Button>
+          </Row>
         </Accordion.Body>
       </Accordion.Item>
     ))
@@ -61,6 +102,12 @@ export function TestsList() {
   return (
     <PageBase requrieAuth={true} roles={["Teacher"]}>
       <div className="container">
+        <Row className="my-3">
+          Students:{" "}
+          {students?.map((student) => (
+            <span className="nx-1">{student.username}</span>
+          ))}
+        </Row>
         <Row className="my-3">
           <Col>
             <ButtonGroup>
