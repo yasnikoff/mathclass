@@ -17,6 +17,7 @@ import { About } from "./features/about/About"
 import ProblemList from "./features/problems/ProblemList"
 import TestsList from "./features/mathTests/TestsList"
 import LoginScreen from "./features/auth/Login"
+import SignUpScreen from "./features/auth/Signup"
 import { useAppDispatch } from "./app/hooks"
 
 const router = createBrowserRouter(
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
       {/* <Route element={<About />} path="about" /> */}
       <Route element={<UserProfile />} path="profile" />,
       <Route element={<LoginScreen />} path="login" />,
+      <Route element={<SignUpScreen />} path="signup" />,
     </Route>,
   ),
 )

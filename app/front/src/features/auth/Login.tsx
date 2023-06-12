@@ -4,6 +4,7 @@ import Spinner from "react-bootstrap/Spinner"
 import Button from "react-bootstrap/Button"
 import Card from "react-bootstrap/Card"
 import Form from "react-bootstrap/Form"
+import { Row, Col } from "react-bootstrap"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { userLogin } from "./authActions"
 import { useNavigate } from "react-router-dom"
@@ -33,6 +34,10 @@ export function LoginScreen() {
   const submitForm = async (data: LoginData) => {
     await dispatch(userLogin(data))
     await dispatch(problemsList({ userId: user?.id }))
+  }
+
+  const signUp = async () => {
+    await navigate("/signup")
   }
 
   return (
@@ -66,9 +71,18 @@ export function LoginScreen() {
                   required
                 />
               </Form.Group>
-              <Button variant="primary" type="submit" disabled={loading}>
-                {loading ? <Spinner /> : "Login"}
-              </Button>
+              <Row>
+                <Col>
+                  <Button variant="primary" type="submit" disabled={loading}>
+                    {loading ? <Spinner /> : "Login"}
+                  </Button>
+                </Col>
+                <Col>
+                  <Button variant="secondary" onClick={signUp}>
+                    Sign up
+                  </Button>
+                </Col>
+              </Row>
             </Form>
 
             <div className={success ? "d-none" : "d-block mt-3 text-danger"}>
@@ -80,8 +94,8 @@ export function LoginScreen() {
           <Card.Header>Test user credentials</Card.Header>
           <Card.Body>
             <ListGroup>
-              {testUsers.map((user) => (
-                <TestUserData {...user}></TestUserData>
+              {testUsers.map((user, index) => (
+                <TestUserData {...user} key={index}></TestUserData>
               ))}
             </ListGroup>
           </Card.Body>
