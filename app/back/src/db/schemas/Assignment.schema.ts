@@ -9,7 +9,7 @@ export type AssignmentDocument = HydratedDocument<Assignment>;
 @Schema()
 export class Assignment {
   @Prop()
-  id: string;
+  _id: string;
 
   @Prop()
   caption: string;
@@ -20,11 +20,19 @@ export class Assignment {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   student: User;
 
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  teacher: User;
+
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Solution' }] })
   solutions: Solution[];
 
-  @Prop({ enum: ['sent', 'completed', 'checked'] })
+  @Prop({ enum: ['students_draft', 'submitted', 'checked'] })
   status: string;
 }
+
+export type NewAssignment = Omit<
+  Assignment,
+  '_id' | 'student' | 'solutions' | 'status'
+> & { students: string[] };
 
 export const AssignmentSchema = SchemaFactory.createForClass(Assignment);
