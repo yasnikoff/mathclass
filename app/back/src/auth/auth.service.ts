@@ -20,7 +20,12 @@ export class AuthService {
       throw new UnauthorizedException();
     }
     await ConfigModule.envVariablesLoaded;
-    const payload = { sub: user.id, username: user.username };
+    const payload = {
+      sub: user.id,
+      id: user.id,
+      username: user.username,
+      role: user.role,
+    };
     return {
       access_token: await this.jwtService.signAsync(payload, {
         secret: process.env.JWT_SECRET,
@@ -29,6 +34,7 @@ export class AuthService {
       user: {
         username: user.username,
         id: user.id,
+        role: user.role,
       },
     };
   }
