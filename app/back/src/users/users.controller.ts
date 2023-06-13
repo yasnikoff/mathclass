@@ -7,6 +7,7 @@ import {
   Body,
   Post,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard, Public } from 'src/auth';
 import { User } from 'src/db/schemas/User.schema';
@@ -23,8 +24,8 @@ export class UsersController {
   constructor(private readonly service: UsersService) {}
 
   @Get()
-  async getUsers(): Promise<User[]> {
-    return this.service.getUsers();
+  async getUsers(@Query('role') role): Promise<User[]> {
+    return this.service.getUsers(role);
   }
 
   @Get(':username')

@@ -1,7 +1,9 @@
 export type UserRole = "Teacher" | "Student"
 
+export type UserId = string
+
 export interface User {
-  id: string
+  id: UserId
   username: string
   role: UserRole
   email?: string

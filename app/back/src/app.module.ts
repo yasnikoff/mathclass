@@ -7,7 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ProblemsModule } from './problems/problems.module';
 import { AssignmentsModule } from './assignments/assignments.module';
-import { TestsModule } from './mathTests/mathtests.module';
+import { MathTestsModule } from './mathTests/mathtests.module';
 import Joi = require('joi');
 
 @Module({
@@ -23,7 +23,7 @@ import Joi = require('joi');
     }),
     MongooseModule.forRoot(process.env.DB_CONNECTION_STRING),
     AssignmentsModule,
-    TestsModule,
+    MathTestsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

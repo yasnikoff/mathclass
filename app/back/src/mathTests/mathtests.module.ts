@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
-import { TestsService } from './mathTests.service';
+import { MathTestsService } from './mathTests.service';
 import { TestsController } from './mathTests.controller';
-import { Test, TestSchema } from 'src/db/schemas/MathTest.schema';
+import { MathTest, TestSchema } from 'src/db/schemas/MathTest.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Test.name, schema: TestSchema }]),
+    MongooseModule.forFeature([{ name: MathTest.name, schema: TestSchema }]),
   ],
-  providers: [TestsService],
+  providers: [MathTestsService],
   controllers: [TestsController],
+  exports: [MathTestsService],
 })
-export class TestsModule {}
+export class MathTestsModule {}

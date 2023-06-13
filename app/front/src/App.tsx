@@ -15,6 +15,7 @@ import Root from "./routes/Root"
 import Home from "./features/home/Home"
 import { About } from "./features/about/About"
 import ProblemList from "./features/problems/ProblemList"
+import { Assignments } from "./features/assignments/Assignments"
 import TestsList from "./features/mathTests/TestsList"
 import LoginScreen from "./features/auth/Login"
 import SignUpScreen from "./features/auth/Signup"
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
       <Route element={<About />} path="/" />,
       <Route element={<ProblemList />} path="problems" />,
       <Route element={<TestsList />} path="tests" />,
+      <Route element={<Assignments />} path="assignments" />,
       {/* <Route element={<About />} path="about" /> */}
       <Route element={<UserProfile />} path="profile" />,
       <Route element={<LoginScreen />} path="login" />,

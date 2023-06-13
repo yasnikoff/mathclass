@@ -1,5 +1,6 @@
 export interface ProblemData {
   id: ProblemId
+  _id: ProblemId
   math: string
 }
 export const emptyProblem = {

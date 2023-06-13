@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/db/schemas/User.schema';
-import { NewUserDto, UserDto } from './user';
+import { NewUserDto, UserDto, UserRole } from './user';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 import { Data, validate } from 'src/utils/types';
@@ -11,10 +11,15 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return this.userModel.findOne({ username }).exec();
+    const user = await this.userModel.findOne({ username }).exec();
+    user.id = user._id.toString()
+    return user
   }
 
-  async getUsers(): Promise<User[]> {
+  async getUsers(role?: UserRole): Promise<User[]> {
+    if (role) {
+      return this.userModel.find({ role });
+    }
     return this.userModel.find({});
   }
 
