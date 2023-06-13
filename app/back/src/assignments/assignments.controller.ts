@@ -1,6 +1,19 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Query,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { AssignmentsService } from './assignments.service';
-import { Assignment, NewAssignment } from 'src/db/schemas/Assignment.schema';
+import {
+  AssignmentDocument,
+  NewAssignment,
+} from 'src/db/schemas/Assignment.schema';
 
 @Controller('assignments')
 export class AssignmentsController {
@@ -8,12 +21,7 @@ export class AssignmentsController {
 
   @Get()
   async getAll(@Query('student') studentId) {
-    console.log(studentId)
     return this.service.getAll(studentId || undefined);
-  }
-  @Get('foruser/:userId')
-  async getAllForUser(@Param() params) {
-    return this.service.getAll(params?.userId);
   }
 
   @Get(':id')
@@ -24,5 +32,23 @@ export class AssignmentsController {
   @Post()
   async create(@Body() data: NewAssignment) {
     return this.service.create(data);
+  }
+
+  @Put()
+  async save(@Body() assignmnet: AssignmentDocument) {
+    return this.service.save(assignmnet);
+  }
+
+  @Patch(':assignmentId/:solutionIndex')
+  async saveSolution(
+    @Param('assignmentId') assignmentId,
+    @Param('solutionIndex', ParseIntPipe) solutionIndex,
+    @Body() solution,
+  ) {
+    return this.service.saveSolution(
+      assignmentId,
+      solutionIndex,
+      solution.math,
+    );
   }
 }

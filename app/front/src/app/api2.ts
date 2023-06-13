@@ -3,7 +3,7 @@ import type { User, UserId } from "../features/users"
 import type { SignUpData, SignUpResponse } from "../features/auth/Signup"
 import type { Assignment, NewAssignment } from "../features/assignments"
 import { axiosBaseQuery } from "./api"
-import { queries } from "@testing-library/dom"
+
 export const rtkQueryApi = createApi({
   reducerPath: "api",
   baseQuery: axiosBaseQuery(),
@@ -30,6 +30,23 @@ export const rtkQueryApi = createApi({
         url: `assignments` + (studentId ? `?student=${studentId}` : ""),
       }),
     }),
+    saveAssignment: builder.mutation<Assignment, Assignment>({
+      query: (data) => ({
+        url: `assignments`,
+        method: "PUT",
+        data,
+      }),
+    }),
+    saveSolution: builder.query<
+      void,
+      { assignmentId: string; problemIndex: number; solution: { math: string } }
+    >({
+      query: ({ assignmentId, problemIndex, solution }) => ({
+        url: `assignments/${assignmentId}/${problemIndex}`,
+        method: "PATCH",
+        data: solution,
+      }),
+    }),
   }),
 })
 
@@ -38,5 +55,7 @@ export const {
   useLazyCreateNewUserQuery,
   useGetAllAssignmentsQuery,
   useLazyCreateAssignmentQuery,
+  useSaveAssignmentMutation,
   useGetAllStudentsQuery,
+  useLazySaveSolutionQuery,
 } = rtkQueryApi
