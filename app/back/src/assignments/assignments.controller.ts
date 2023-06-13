@@ -21,7 +21,7 @@ export class AssignmentsController {
     return this.service.getById(params?.id);
   }
 
-  @Put()
+  @Post()
   async create(@Body() data: NewAssignment) {
     return this.service.create(data);
   }

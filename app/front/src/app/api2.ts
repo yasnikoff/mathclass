@@ -23,7 +23,7 @@ export const rtkQueryApi = createApi({
     // Assignments
 
     createAssignment: builder.query<Assignment[], NewAssignment>({
-      query: (data) => ({ url: `assignments`, method: "PUT", data }),
+      query: (data) => ({ url: `assignments`, method: "POST", data }),
     }),
     getAllAssignments: builder.query<Assignment[], { studentId?: UserId }>({
       query: ({ studentId }) => ({
