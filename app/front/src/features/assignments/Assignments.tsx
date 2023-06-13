@@ -1,18 +1,22 @@
 import { PageBase } from "../../components/PageBase"
-import ProblemBox from "../problems/ProblemBox"
-import { Accordion } from "react-bootstrap"
+import { Accordion, Container } from "react-bootstrap"
 import Loading from "../../components/Loading"
+import { SolutionBox } from "./SolutionBox"
+import { UseMutation } from "@reduxjs/toolkit/dist/query/react/buildHooks"
 import {
   useGetAllAssignmentsQuery,
   useGetAllStudentsQuery,
+  useSaveAssignmentMutation,
 } from "../../app/api2"
 import { useAuth } from "../auth/authHooks"
+import { Assignment, AssignmentItem } from "."
 
 export function Assignments() {
   const { user } = useAuth()
-  console.dir(user)
-  const param = user?.role === "Student" ? ({ studentId: user.id }) : {}
-  console.dir(param)
+  const isStudent = user?.role === "Student"
+  const isTeacher = user?.role === "Teacher"
+  const param = isStudent ? { studentId: user.id } : {}
+
   const { data, error, isLoading } = useGetAllAssignmentsQuery(param)
   const {
     data: students,
@@ -27,25 +31,41 @@ export function Assignments() {
       <div key={student.id}>{student.username}</div>
     ))
 
-  let assigmentsList
+  const [triggerSave, saveResult] = useSaveAssignmentMutation()
+  async function save(
+    assignment: Assignment,
+    item: AssignmentItem,
+    solution: string,
+  ) {
+    item.solution = solution
+    await triggerSave(assignment).unwrap()
+  }
 
+  let assigmentsList
   if (isLoading) assigmentsList = <Loading></Loading>
   if (data && data?.length > 0) {
-    console.dir(data)
     assigmentsList = (
       <PageBase requrieAuth={true}>
         <Accordion>
           {data.map((assignment) => (
             <Accordion.Item key={assignment._id} eventKey={assignment._id}>
               <Accordion.Header>
-                {assignment.caption} Student: {assignment?.student?.username}
+                <span className="p-2">Assignment:</span>{" "}
+                <b>{assignment.caption}</b>
+                <span className="p-2">Student:</span>{" "}
+                <b>{assignment?.student?.username}</b>
               </Accordion.Header>
               <Accordion.Body>
-                {assignment?.test.problems?.map((problem) => (
-                  <ProblemBox
-                    key={problem._id}
-                    item={{ problem, selected: false }}
-                  ></ProblemBox>
+                {assignment?.items?.map((item, index) => (
+                  <Container className="my-2">
+                    <SolutionBox
+                      key={index}
+                      itemIndex={index}
+                      assignmnet={assignment}
+                      // onSave={(solution) => save(assignment, item, solution)}
+                      item={item}
+                    />
+                  </Container>
                 ))}
               </Accordion.Body>
             </Accordion.Item>
