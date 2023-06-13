@@ -1,6 +1,8 @@
+import { join } from 'node:path';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -22,6 +24,9 @@ import Joi = require('joi');
       }),
     }),
     MongooseModule.forRoot(process.env.DB_CONNECTION_STRING),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', '..', 'front', 'build'),
+    }),
     AssignmentsModule,
     MathTestsModule,
   ],
