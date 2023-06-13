@@ -2,10 +2,8 @@ import { PageBase } from "../../components/PageBase"
 import { Accordion, Container } from "react-bootstrap"
 import Loading from "../../components/Loading"
 import { SolutionBox } from "./SolutionBox"
-import { UseMutation } from "@reduxjs/toolkit/dist/query/react/buildHooks"
 import {
   useGetAllAssignmentsQuery,
-  useGetAllStudentsQuery,
   useSaveAssignmentMutation,
 } from "../../app/api2"
 import { useAuth } from "../auth/authHooks"
@@ -14,22 +12,10 @@ import { Assignment, AssignmentItem } from "."
 export function Assignments() {
   const { user } = useAuth()
   const isStudent = user?.role === "Student"
-  const isTeacher = user?.role === "Teacher"
+  // const isTeacher = user?.role === "Teacher"
   const param = isStudent ? { studentId: user.id } : {}
 
   const { data, error, isLoading } = useGetAllAssignmentsQuery(param)
-  const {
-    data: students,
-    error: studentsError,
-    isLoading: isStudentsLoading,
-  } = useGetAllStudentsQuery()
-
-  let studentsList
-  if (isStudentsLoading) studentsList = <Loading></Loading>
-  if (students)
-    studentsList = students.map((student) => (
-      <div key={student.id}>{student.username}</div>
-    ))
 
   const [triggerSave, saveResult] = useSaveAssignmentMutation()
   async function save(
@@ -76,7 +62,7 @@ export function Assignments() {
   }
 
   return (
-    <PageBase>
+    <PageBase requrieAuth={true}>
       {/* {studentsList} */}
       {assigmentsList}
     </PageBase>

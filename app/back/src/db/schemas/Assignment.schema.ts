@@ -35,7 +35,6 @@ export type AssignmentDocument = HydratedDocument<Assignment>;
 
 @Schema()
 export class Assignment {
-
   @Prop()
   caption: string;
 

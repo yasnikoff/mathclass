@@ -13,7 +13,7 @@ export class UsersService {
   async getUserByUsername(username: string): Promise<User | undefined> {
     const user = await this.userModel.findOne({ username }).exec();
     if (user) user.id = user._id.toString();
-    return user
+    return user;
   }
 
   async getUsers(role?: UserRole): Promise<User[]> {
