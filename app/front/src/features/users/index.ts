@@ -4,6 +4,7 @@ export type UserId = string
 
 export interface User {
   id: UserId
+  _id: UserId
   username: string
   role: UserRole
   email?: string
