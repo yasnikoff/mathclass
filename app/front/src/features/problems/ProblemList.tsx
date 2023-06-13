@@ -19,8 +19,6 @@ import { useNavigate } from "react-router-dom"
 import { PageBase } from "../../components/PageBase"
 
 export function ProblemList() {
-
-
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { list } = useAppSelector((state) => state.problems)
