@@ -15,6 +15,7 @@ import { useSelector } from "react-redux"
 import ProblemBox from "../problems/ProblemBox"
 import { PageBase } from "../../components/PageBase"
 import { AppState } from "../../app/store"
+import { problemsList } from "../problems/problemsActions"
 
 export function TestsList() {
 
@@ -25,6 +26,7 @@ export function TestsList() {
   )
 
   useEffect(() => {
+    dispatch(problemsList({}))
     dispatch(testsList())
   }, [dispatch])
 
