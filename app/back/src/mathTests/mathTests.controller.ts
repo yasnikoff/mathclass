@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { TestsService } from './mathTests.service';
+import { MathTestsService } from './mathTests.service';
 import { ProblemId } from 'src/problems';
 
 @Controller('tests')
 export class TestsController {
-  constructor(private service: TestsService) {}
+  constructor(private service: MathTestsService) {}
 
   @Post()
   async create(@Body() body: { caption: string; problems: ProblemId[] }) {
