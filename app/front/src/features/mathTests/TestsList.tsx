@@ -25,7 +25,6 @@ import {
 import { NewAssignment } from "../assignments"
 import { TestData } from "."
 
-
 export function TestsList() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -74,16 +73,11 @@ export function TestsList() {
         <Accordion.Body>
           <Row>
             <ol>
-              {item.problems.map((problemId) => (
+              {item.problems.map((problem) => (
                 <li>
                   <ProblemBox
-                    key={problemId}
-                    item={{
-                      problem: problemsListItems
-                        .filter((item) => item.problem.id === problemId)
-                        .map((item) => item.problem)[0],
-                      selected: false,
-                    }}
+                    key={problem._id}
+                    item={{ problem, selected: false }}
                     selectable={false}
                   ></ProblemBox>
                 </li>
@@ -102,12 +96,12 @@ export function TestsList() {
   return (
     <PageBase requrieAuth={true} roles={["Teacher"]}>
       <div className="container">
-        <Row className="my-3">
+        {/* <Row className="my-3">
           Students:{" "}
           {students?.map((student) => (
             <span className="nx-1">{student.username}</span>
           ))}
-        </Row>
+        </Row> */}
         <Row className="my-3">
           <Col>
             <ButtonGroup>
