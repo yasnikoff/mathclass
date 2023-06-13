@@ -1,11 +1,10 @@
 import { UserId } from "../users"
-import { ProblemData as Problem } from "../problems"
-import { TestData as Test } from "../mathTests"
+import { ProblemData } from "../problems"
 
 export type Solution = {
   _id: string
 
-  problem: Problem
+  problem: ProblemData
 
   math: string
 
@@ -23,9 +22,16 @@ export type Assignment = {
 
   teacher: UserId
 
-  solutions: Solution[]
+  items: AssignmentItem[]
 
   status: string
+}
+
+export type AssignmentItem = {
+  problem: ProblemData
+  solution: string
+  status: "students_draft" | "rejected" | "accepted"
+  mark: number
 }
 
 export type NewAssignment = Omit<
