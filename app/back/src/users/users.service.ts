@@ -12,7 +12,7 @@ export class UsersService {
 
   async getUserByUsername(username: string): Promise<User | undefined> {
     const user = await this.userModel.findOne({ username }).exec();
-    user.id = user._id.toString()
+    if (user) user.id = user._id.toString();
     return user
   }
 
