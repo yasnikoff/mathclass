@@ -11,6 +11,8 @@ export interface User {
   avatar?: string
 }
 
+export type UserShort = Pick<User, "id" | "_id" | "username" | "role">
+
 export const testUsers: {
   username: string
   role: UserRole

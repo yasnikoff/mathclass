@@ -1,10 +1,10 @@
 import { createAsyncThunk, createAction } from "@reduxjs/toolkit"
 import api from "../../app/api"
-import { UserRole } from "../users"
+import { UserShort } from "../users"
 
 export type LoginResponse = {
   access_token: string
-  user: { username: string; id: string; role: UserRole }
+  user: UserShort
 }
 
 export type LoginData = {
