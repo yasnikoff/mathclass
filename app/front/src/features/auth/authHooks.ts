@@ -1,9 +1,11 @@
 import { useAppSelector } from "../../app/hooks"
 
-import { User } from "../users"
+import { UserShort } from "../users"
 import { AppState } from "../../app/store"
 
-export const useAuth = (useAuthValue = true): { user: User | undefined } => {
+export const useAuth = (
+  useAuthValue = true,
+): { user: UserShort | undefined } => {
   const { user } = useAppSelector((state: AppState) => state.auth)
 
   return { user: useAuthValue ? user : undefined }
