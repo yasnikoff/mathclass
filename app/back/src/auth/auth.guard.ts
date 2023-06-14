@@ -8,6 +8,8 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { ConfigService, ConfigModule } from '@nestjs/config';
+import { UserRole } from 'src/utils';
+import { ROLES_KEY } from './decorators';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -36,15 +38,24 @@ export class AuthGuard implements CanActivate {
     if (!token) {
       throw new UnauthorizedException();
     }
+    let user;
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
+      user = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get<string>('JWT_SECRET'),
       });
-      request['user'] = payload;
+      request['user'] = user;
     } catch {
       throw new UnauthorizedException();
     }
-    return true;
+
+    const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(
+      ROLES_KEY,
+      [context.getHandler(), context.getClass()],
+    );
+    if (!requiredRoles) {
+      return true;
+    }
+    return requiredRoles.some((role) => user?.role === role);
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
