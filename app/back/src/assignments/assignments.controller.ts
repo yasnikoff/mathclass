@@ -8,7 +8,11 @@ import {
   Put,
   Query,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from 'src/auth';
+import { Roles } from 'src/auth/decorators';
+import { UserRole } from 'src/utils';
 import { AssignmentsService } from './assignments.service';
 import {
   AssignmentDocument,
@@ -16,6 +20,7 @@ import {
 } from 'src/db/schemas/Assignment.schema';
 
 @Controller('assignments')
+@UseGuards(AuthGuard)
 export class AssignmentsController {
   constructor(private service: AssignmentsService) {}
 
@@ -30,6 +35,7 @@ export class AssignmentsController {
   }
 
   @Post()
+  @Roles(UserRole.Teacher)
   async create(@Body() data: NewAssignment) {
     return this.service.create(data);
   }
@@ -40,6 +46,7 @@ export class AssignmentsController {
   }
 
   @Patch(':assignmentId/:solutionIndex')
+  @Roles(UserRole.Student)
   async saveSolution(
     @Param('assignmentId') assignmentId,
     @Param('solutionIndex', ParseIntPipe) solutionIndex,
@@ -50,5 +57,15 @@ export class AssignmentsController {
       solutionIndex,
       solution.math,
     );
+  }
+
+  @Put('marks/:assignmentId/:solutionIndex/:mark')
+  @Roles(UserRole.Teacher)
+  async setMark(
+    @Param('assignmentId') assignmentId,
+    @Param('solutionIndex', ParseIntPipe) solutionIndex,
+    @Param('mark') mark,
+  ) {
+    return this.service.setMark(assignmentId, solutionIndex, parseInt(mark));
   }
 }

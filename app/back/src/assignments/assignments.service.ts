@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model , ObjectId} from 'mongoose';
+import mongoose, { Model, ObjectId } from 'mongoose';
 import {
   Assignment,
   AssignmentDocument,
@@ -98,7 +98,17 @@ export class AssignmentsService {
     const assignment = await this.assignmentModel.findById(assignmetId);
     const assignmentItem = assignment && assignment.items[problemIndex];
     if (assignmentItem) {
-      assignment.items[problemIndex].solution = solution;
+      assignmentItem.solution = solution;
+      assignmentItem.mark = 0;
+      return await assignment.save();
+    }
+  }
+
+  async setMark(assignmetId: string, problemIndex: number, mark: number) {
+    const assignment = await this.assignmentModel.findById(assignmetId);
+    const assignmentItem = assignment && assignment.items[problemIndex];
+    if (assignmentItem) {
+      assignmentItem.mark = mark;
       return await assignment.save();
     }
   }

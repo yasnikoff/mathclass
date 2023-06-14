@@ -47,6 +47,15 @@ export const rtkQueryApi = createApi({
         data: solution,
       }),
     }),
+    saveMark: builder.query<
+      void,
+      { assignmentId: string; problemIndex: number; mark: number }
+    >({
+      query: ({ assignmentId, problemIndex, mark }) => ({
+        url: `assignments/marks/${assignmentId}/${problemIndex}/${mark}`,
+        method: "PUT",
+      }),
+    }),
   }),
 })
 
@@ -55,6 +64,7 @@ export const {
   useLazyCreateNewUserQuery,
   useGetAllAssignmentsQuery,
   useLazyCreateAssignmentQuery,
+  useLazySaveMarkQuery,
   useSaveAssignmentMutation,
   useGetAllStudentsQuery,
   useLazySaveSolutionQuery,
