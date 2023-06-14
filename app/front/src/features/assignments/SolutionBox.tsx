@@ -10,7 +10,7 @@ import {
 import { Problem } from "../problems/Problem"
 import { useState } from "react"
 import { useAuth } from "../auth/authHooks"
-import { useLazySaveSolutionQuery } from "../../app/api2"
+import { useLazySaveSolutionQuery, useLazySaveMarkQuery } from "../../app/api2"
 import { Assignment, AssignmentItem } from "."
 
 export type SolutionBoxProps = {
@@ -22,9 +22,11 @@ export type SolutionBoxProps = {
 
 export function SolutionBox(props: SolutionBoxProps) {
   const [solution, setSolution] = useState(props.item.solution)
+  const [mark, setMark] = useState(props.item.mark)
   const [status, setStatus] = useState(props.item.status)
   const { user } = useAuth()
   const [trigger, result] = useLazySaveSolutionQuery()
+  const [saveMarkTrigger, saveMarkResult] = useLazySaveMarkQuery()
 
   async function save() {
     // await props.onSave(solution)
@@ -35,6 +37,17 @@ export function SolutionBox(props: SolutionBoxProps) {
         solution: { math: solution },
       },
       true,
+    ).unwrap()
+  }
+
+  async function saveMark() {
+    await saveMarkTrigger(
+      {
+        assignmentId: props.assignmnet._id,
+        problemIndex: props.itemIndex,
+        mark,
+      },
+      false,
     ).unwrap()
   }
 
@@ -65,22 +78,27 @@ export function SolutionBox(props: SolutionBoxProps) {
               {user?.role === "Student" && (
                 <Form.Group>
                   <Button type="submit" onClick={save}>
-                    {result?.isLoading ? <Spinner></Spinner> : "Save"}
+                    {result?.isLoading ? <Spinner></Spinner> : "Save solution"}
                   </Button>
                 </Form.Group>
               )}
-              {user?.role === "Teacher" && solution && (
-                <Form.Group>
-                  <ButtonGroup>
-                    <Button type="submit" onClick={() => setStatus("accepted")}>
-                      Approve
-                    </Button>
-                    <Button type="submit" onClick={() => setStatus("rejected")}>
-                      Reject
-                    </Button>
-                  </ButtonGroup>
-                </Form.Group>
+              <Form.Group style={{width: "150px"}}>
+                
+              {user?.role === "Teacher" && solution && (<>
+                <Form.Label className="ml-2 mt-2">Mark:</Form.Label>
+                  <Form.Control
+                    className="my-4"
+                    as="input"
+                    value={mark}
+                    onChange={(e) => setMark(parseInt(e.target.value))}
+                  ></Form.Control>
+                  <Button type="submit" onClick={saveMark}>
+                    {result?.isLoading ? <Spinner></Spinner> : "Set Mark"}
+                  </Button>
+                  </>
               )}
+              {user?.role === 'Student' && mark > 0 && (<><Form.Label className="ml-2 mt-2">Mark:</Form.Label><span className="ml-2">{mark}</span></>)}
+              </Form.Group>
             </Row>
           </Card.Body>
         </Form>
