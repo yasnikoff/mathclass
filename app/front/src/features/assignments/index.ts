@@ -1,4 +1,4 @@
-import { UserId } from "../users"
+import { UserId, UserShort } from "../users"
 import { ProblemData } from "../problems"
 
 export type Solution = {
@@ -18,9 +18,9 @@ export type Assignment = {
 
   test: string
 
-  student: UserId
+  student: UserShort
 
-  teacher: UserId
+  teacher: UserShort
 
   items: AssignmentItem[]
 
@@ -36,8 +36,8 @@ export type AssignmentItem = {
 
 export type NewAssignment = Omit<
   Assignment,
-  "_id" | "student" | "solutions" | "status"
-> & { students: UserId[] }
+  "_id" | "student" | "status" | "teacher" | "items"
+> & { students: UserId[]; teacher: UserId }
 
 export type StudentAssignmentsRequest = {
   userId?: UserId
