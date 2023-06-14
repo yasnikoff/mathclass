@@ -21,11 +21,13 @@ import Joi = require('joi');
       isGlobal: true,
       validationSchema: Joi.object({
         DB_CONNECTION_STRING: Joi.string().required(),
+        API_PREFIX: Joi.string().required(),
+        PORT: Joi.string().required(),
       }),
     }),
     MongooseModule.forRoot(process.env.DB_CONNECTION_STRING),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..', '..', 'front', 'build'),
+      rootPath: join(__dirname, process.env.FRONT_PATH),
     }),
     AssignmentsModule,
     MathTestsModule,
