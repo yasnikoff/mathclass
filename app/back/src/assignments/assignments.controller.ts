@@ -58,4 +58,14 @@ export class AssignmentsController {
       solution.math,
     );
   }
+
+  @Put('marks/:assignmentId/:solutionIndex/:mark')
+  @Roles(UserRole.Teacher)
+  async setMark(
+    @Param('assignmentId') assignmentId,
+    @Param('solutionIndex', ParseIntPipe) solutionIndex,
+    @Param('mark') mark,
+  ) {
+    return this.service.setMark(assignmentId, solutionIndex, parseInt(mark));
+  }
 }
