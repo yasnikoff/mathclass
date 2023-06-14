@@ -7,6 +7,12 @@ export default defineConfig({
   base: "/",
   server: {
     open: true,
+    watch: {
+      usePolling: true,
+    },
+    host: true, // needed for the Docker Container port mapping to work
+    strictPort: true,
+    // port: 8080,
   },
   build: {
     outDir: "build",
