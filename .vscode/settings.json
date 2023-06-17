@@ -2,5 +2,8 @@
     "files.eol": "\n",
     "cSpell.words": [
         "reduxjs"
-    ]
+    ],
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }
