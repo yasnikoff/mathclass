@@ -56,7 +56,7 @@ export class Assignment {
 
 export type NewAssignment = Omit<
   Assignment,
-  '_id' | 'student' | 'items' | 'status'
-> & { students: string[] };
+  '_id' | 'student' | 'items' | 'status' | 'test'
+> & { students: string[]; test: string };
 
 export const AssignmentSchema = SchemaFactory.createForClass(Assignment);
