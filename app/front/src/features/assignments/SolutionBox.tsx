@@ -23,7 +23,7 @@ export type SolutionBoxProps = {
 export function SolutionBox(props: SolutionBoxProps) {
   const [solution, setSolution] = useState(props.item.solution)
   const [mark, setMark] = useState(props.item.mark)
-  const [status, setStatus] = useState(props.item.status)
+  const [status] = useState(props.item.status)
   const { user } = useAuth()
   const [trigger, result] = useLazySaveSolutionQuery()
   const [saveMarkTrigger, saveMarkResult] = useLazySaveMarkQuery()
@@ -64,7 +64,10 @@ export function SolutionBox(props: SolutionBoxProps) {
             <Form.Group>
               <Problem data={props.item.problem}></Problem>
             </Form.Group>
-            <div className="my-1">{status}</div>
+            <div className="my-1">
+              <span className="mr-2">Status: </span>
+              {status}
+            </div>
           </Card.Header>
           <Card.Body>
             <Form.Group>
