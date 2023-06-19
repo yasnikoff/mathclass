@@ -37,7 +37,7 @@ export const rtkQueryApi = createApi({
         data,
       }),
     }),
-    saveSolution: builder.query<
+    saveSolution: builder.mutation<
       void,
       { assignmentId: string; problemIndex: number; solution: { math: string } }
     >({
@@ -67,5 +67,5 @@ export const {
   useLazySaveMarkQuery,
   useSaveAssignmentMutation,
   useGetAllStudentsQuery,
-  useLazySaveSolutionQuery,
+  useSaveSolutionMutation,
 } = rtkQueryApi

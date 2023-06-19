@@ -22,8 +22,15 @@ export function Assignments() {
             <Accordion.Header>
               <span className="p-2">Assignment:</span>{" "}
               <b>{assignment.caption}</b>
-              <span className="p-2">Student:</span>{" "}
-              <b>{assignment?.student?.username}</b>
+              {isStudent ? (
+                <></>
+              ) : (
+                <>
+                  {" "}
+                  <span className="p-2">Student:</span>" "
+                  <b>{assignment?.student?.username}</b>
+                </>
+              )}
             </Accordion.Header>
             <Accordion.Body>
               {assignment?.items?.map((item, index) => (

@@ -101,7 +101,6 @@ export class AssignmentsService {
       }
       assignmentItem.solution = solution;
       assignmentItem.mark = 0;
-      assignmentItem.status = AssignmentStatus.SUBMITTED;
       return await assignment.save();
     }
   }

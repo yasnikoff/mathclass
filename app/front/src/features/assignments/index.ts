@@ -27,10 +27,12 @@ export type Assignment = {
   status: string
 }
 
+export type AssignmentItemStatus = "students_draft" | "submitted" | "checked"
+
 export type AssignmentItem = {
   problem: ProblemData
   solution: string
-  status: "students_draft" | "rejected" | "accepted"
+  status: AssignmentItemStatus
   mark: number
 }
 
