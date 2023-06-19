@@ -27,8 +27,8 @@ export function Assignments() {
     await triggerSave(assignment).unwrap()
   }
 
-  let assigmentsList
-  if (isLoading) assigmentsList = <Loading></Loading>
+  let assignmentsList
+  if (isLoading) assignmentsList = <Loading></Loading>
   if (data && data?.length > 0) {
     assignmentsList = (
       <PageBase requireAuth={true}>
@@ -48,7 +48,6 @@ export function Assignments() {
                       key={index}
                       itemIndex={index}
                       assignment={assignment}
-                      // onSave={(solution) => save(assignment, item, solution)}
                       item={item}
                     />
                   </Container>
@@ -64,7 +63,7 @@ export function Assignments() {
   return (
     <PageBase requireAuth={true}>
       {/* {studentsList} */}
-      {assigmentsList}
+      {assignmentsList}
     </PageBase>
   )
 }
