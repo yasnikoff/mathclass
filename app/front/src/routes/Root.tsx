@@ -38,7 +38,7 @@ export default function Root() {
               </Link>
             </Nav.Item>
             <Nav.Item>
-              <AuthLink to={`profile`} className="nav-link">
+              <AuthLink to={`profile`} className="nav-link" alwaysShow={true}>
                 Profile
               </AuthLink>
             </Nav.Item>

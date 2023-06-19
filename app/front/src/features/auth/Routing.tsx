@@ -9,16 +9,25 @@ type AuthLinkProps = {
   children: ReactNode
   roles?: UserRole[]
   className: string
+  alwaysShow?: boolean
 }
 
-const AuthLink = ({ to, roles, children, className }: AuthLinkProps) => {
+const AuthLink = ({
+  to,
+  roles,
+  children,
+  className,
+  alwaysShow,
+}: AuthLinkProps) => {
   const { user } = useAuth()
 
   if (!user) {
-    return (
+    return alwaysShow ? (
       <Link to="/login" className={className}>
         {children}
       </Link>
+    ) : (
+      <></>
     )
   }
 
