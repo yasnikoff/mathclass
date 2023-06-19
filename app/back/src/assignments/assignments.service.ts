@@ -8,7 +8,7 @@ import {
   AssignmentItemSchema,
   SolutionStatus,
 } from 'src/db/schemas/Assignment.schema';
-import { MathTestsService } from 'src/mathTests/mathTests.service';
+import { MathTestsService } from 'src/math_tests/math_tests.service';
 import { UserRole } from 'src/utils';
 
 import { AssignmentStatus } from '.';

@@ -9,7 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ProblemsModule } from './problems/problems.module';
 import { AssignmentsModule } from './assignments/assignments.module';
-import { MathTestsModule } from './mathTests/mathTests.module';
+import { MathTestsModule } from './math_tests/math_tests.module';
 import Joi = require('joi');
 
 @Module({
