@@ -47,7 +47,7 @@ export function Assignments() {
                     <SolutionBox
                       key={index}
                       itemIndex={index}
-                      assignmnet={assignment}
+                      assignment={assignment}
                       // onSave={(solution) => save(assignment, item, solution)}
                       item={item}
                     />

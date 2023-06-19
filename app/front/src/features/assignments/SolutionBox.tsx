@@ -15,7 +15,7 @@ import { Assignment, AssignmentItem } from "."
 
 export type SolutionBoxProps = {
   //   onSave: (solution: string) => void
-  assignmnet: Assignment
+  assignment: Assignment
   itemIndex: number
   item: AssignmentItem
 }
@@ -34,7 +34,7 @@ export function SolutionBox(props: SolutionBoxProps) {
     target.disabled = true
     await trigger(
       {
-        assignmentId: props.assignmnet._id,
+        assignmentId: props.assignment._id,
         problemIndex: props.itemIndex,
         solution: { math: solution },
       },
@@ -48,7 +48,7 @@ export function SolutionBox(props: SolutionBoxProps) {
     target.disabled = true
     await saveMarkTrigger(
       {
-        assignmentId: props.assignmnet._id,
+        assignmentId: props.assignment._id,
         problemIndex: props.itemIndex,
         mark,
       },
