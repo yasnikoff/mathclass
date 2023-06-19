@@ -41,8 +41,8 @@ export class AssignmentsController {
   }
 
   @Put()
-  async save(@Body() assignmnet: AssignmentDocument) {
-    return this.service.save(assignmnet);
+  async save(@Body() assignment: AssignmentDocument) {
+    return this.service.save(assignment);
   }
 
   @Patch(':assignmentId/:solutionIndex')
@@ -57,6 +57,12 @@ export class AssignmentsController {
       solutionIndex,
       solution.math,
     );
+  }
+
+  @Put(':assignmentId/submit')
+  @Roles(UserRole.Student)
+  async patchAssignment(@Param('assignmentId') assignmentId) {
+    return this.service.submitAssignment(assignmentId);
   }
 
   @Put('marks/:assignmentId/:solutionIndex/:mark')

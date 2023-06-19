@@ -105,6 +105,24 @@ export class AssignmentsService {
     }
   }
 
+  async submitAssignment(assignmentId: string) {
+    const assignment = await this.assignmentModel.findById(assignmentId);
+    if (!assignment) {
+      throw new HttpException(`No assignment found`, HttpStatus.NOT_FOUND);
+    }
+    if (
+      assignment?.status &&
+      assignment.status !== AssignmentStatus.STUDENTS_DRAFT
+    ) {
+      throw new HttpException(
+        `Only student draft can be submitted`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    assignment.status = AssignmentStatus.SUBMITTED;
+    return this.assignmentModel.findByIdAndUpdate(assignment._id, assignment);
+  }
+
   async setMark(assignmentId: string, problemIndex: number, mark: number) {
     const assignment = await this.assignmentModel.findById(assignmentId);
     const assignmentItem = assignment && assignment.items[problemIndex];
