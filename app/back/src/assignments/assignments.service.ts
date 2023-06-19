@@ -1,17 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model, ObjectId } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import {
   Assignment,
   AssignmentDocument,
   NewAssignment,
-  AssignmentSchema,
   AssignmentItemSchema,
   SolutionStatus,
 } from 'src/db/schemas/Assignment.schema';
 import { MathTestsService } from 'src/mathTests/mathTests.service';
 import { UserRole } from 'src/utils';
-import { inspect } from 'util';
 
 import { AssignmentStatus } from '.';
 
@@ -62,7 +60,6 @@ export class AssignmentsService {
       'AssignmentItemModel',
       AssignmentItemSchema,
     );
-    //@ts-ignore
     const test = await this.testService.getById(data.test);
     if (!test) {
       throw new Error(`test with id ${data.test} not found`);
@@ -91,11 +88,11 @@ export class AssignmentsService {
   }
 
   async saveSolution(
-    assignmetId: string,
+    assignmentId: string,
     problemIndex: number,
     solution: string,
   ) {
-    const assignment = await this.assignmentModel.findById(assignmetId);
+    const assignment = await this.assignmentModel.findById(assignmentId);
     const assignmentItem = assignment && assignment.items[problemIndex];
     if (assignmentItem) {
       assignmentItem.solution = solution;
@@ -104,8 +101,8 @@ export class AssignmentsService {
     }
   }
 
-  async setMark(assignmetId: string, problemIndex: number, mark: number) {
-    const assignment = await this.assignmentModel.findById(assignmetId);
+  async setMark(assignmentId: string, problemIndex: number, mark: number) {
+    const assignment = await this.assignmentModel.findById(assignmentId);
     const assignmentItem = assignment && assignment.items[problemIndex];
     if (assignmentItem) {
       assignmentItem.mark = mark;
