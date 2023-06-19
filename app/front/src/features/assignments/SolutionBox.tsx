@@ -20,7 +20,7 @@ export function SolutionBox(props: SolutionBoxProps) {
   const [saveMarkTrigger, saveMarkResult] = useLazySaveMarkQuery()
 
   const isEditable = props.item.status === "students_draft"
-  const attrForEditControls = isEditable ? { disabled: true } : {}
+  const attrForEditControls = isEditable ? {} : { disabled: true }
 
   async function save(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
