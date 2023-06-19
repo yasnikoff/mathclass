@@ -30,8 +30,8 @@ export function Assignments() {
   let assigmentsList
   if (isLoading) assigmentsList = <Loading></Loading>
   if (data && data?.length > 0) {
-    assigmentsList = (
-      <PageBase requrieAuth={true}>
+    assignmentsList = (
+      <PageBase requireAuth={true}>
         <Accordion>
           {data.map((assignment) => (
             <Accordion.Item key={assignment._id} eventKey={assignment._id}>
@@ -62,7 +62,7 @@ export function Assignments() {
   }
 
   return (
-    <PageBase requrieAuth={true}>
+    <PageBase requireAuth={true}>
       {/* {studentsList} */}
       {assigmentsList}
     </PageBase>

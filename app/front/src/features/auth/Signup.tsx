@@ -48,7 +48,7 @@ export function SignUpScreen() {
   }
 
   return (
-    <PageBase requrieAuth={false}>
+    <PageBase requireAuth={false}>
       <Container
         style={{ width: "500px" }}
         className="d-flex justify-content-center align-items-center"
