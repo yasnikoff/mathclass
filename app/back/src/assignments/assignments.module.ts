@@ -3,7 +3,7 @@ import { AssignmentsService } from './assignments.service';
 import { AssignmentsController } from './assignments.controller';
 import { Assignment, AssignmentSchema } from 'src/db/schemas/Assignment.schema';
 import { MongooseModule } from '@nestjs/mongoose';
-import { MathTestsModule } from 'src/mathTests/mathTests.module';
+import { MathTestsModule } from 'src/math_tests/math_tests.module';
 import { AuthModule } from 'src/auth/auth.module';
 
 @Module({

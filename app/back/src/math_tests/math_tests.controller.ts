@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { MathTestsService } from './mathTests.service';
+import { MathTestsService } from './math_tests.service';
 import { ProblemId } from 'src/problems';
 
 @Controller('tests')
