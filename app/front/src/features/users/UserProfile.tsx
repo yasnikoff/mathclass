@@ -17,7 +17,7 @@ export function UserProfile() {
   const { data, error, isLoading } = useGetUserByNameQuery(user?.username || "")
 
   return (
-    <PageBase isLoading={isLoading} error={error} requrieAuth={true}>
+    <PageBase isLoading={isLoading} error={error} requireAuth={true}>
       <Container className="d-flex justify-content-center align-items-center">
         <Card className="mt-5">
           <Card.Body>

@@ -1,12 +1,4 @@
-import {
-  Form,
-  Container,
-  Card,
-  Button,
-  ButtonGroup,
-  Row,
-  Spinner,
-} from "react-bootstrap"
+import { Form, Container, Card, Button, Row, Spinner } from "react-bootstrap"
 import { Problem } from "../problems/Problem"
 import { useState, MouseEvent } from "react"
 import { useAuth } from "../auth/authHooks"
@@ -14,8 +6,7 @@ import { useLazySaveSolutionQuery, useLazySaveMarkQuery } from "../../app/api2"
 import { Assignment, AssignmentItem } from "."
 
 export type SolutionBoxProps = {
-  //   onSave: (solution: string) => void
-  assignmnet: Assignment
+  assignment: Assignment
   itemIndex: number
   item: AssignmentItem
 }
@@ -23,10 +14,13 @@ export type SolutionBoxProps = {
 export function SolutionBox(props: SolutionBoxProps) {
   const [solution, setSolution] = useState(props.item.solution)
   const [mark, setMark] = useState(props.item.mark)
-  const [status, setStatus] = useState(props.item.status)
+  const [status] = useState(props.item.status)
   const { user } = useAuth()
   const [trigger, result] = useLazySaveSolutionQuery()
   const [saveMarkTrigger, saveMarkResult] = useLazySaveMarkQuery()
+
+  const isEditable = props.item.status === "students_draft"
+  const attrForEditControls = isEditable ? { disabled: true } : {}
 
   async function save(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
@@ -34,7 +28,7 @@ export function SolutionBox(props: SolutionBoxProps) {
     target.disabled = true
     await trigger(
       {
-        assignmentId: props.assignmnet._id,
+        assignmentId: props.assignment._id,
         problemIndex: props.itemIndex,
         solution: { math: solution },
       },
@@ -48,7 +42,7 @@ export function SolutionBox(props: SolutionBoxProps) {
     target.disabled = true
     await saveMarkTrigger(
       {
-        assignmentId: props.assignmnet._id,
+        assignmentId: props.assignment._id,
         problemIndex: props.itemIndex,
         mark,
       },
@@ -64,7 +58,10 @@ export function SolutionBox(props: SolutionBoxProps) {
             <Form.Group>
               <Problem data={props.item.problem}></Problem>
             </Form.Group>
-            <div className="my-1">{status}</div>
+            <div className="my-1">
+              <span className="mr-2">Status: </span>
+              {status}
+            </div>
           </Card.Header>
           <Card.Body>
             <Form.Group>
@@ -75,6 +72,7 @@ export function SolutionBox(props: SolutionBoxProps) {
                   className="my-4"
                   as="textarea"
                   value={solution}
+                  {...attrForEditControls}
                   onChange={(e) => setSolution(e.target.value)}
                 ></Form.Control>
               )}
@@ -82,7 +80,7 @@ export function SolutionBox(props: SolutionBoxProps) {
             <Row className="my-2">
               {user?.role === "Student" && (
                 <Form.Group>
-                  <Button onClick={save}>
+                  <Button onClick={save} {...attrForEditControls}>
                     {result?.isLoading ? <Spinner></Spinner> : "Save solution"}
                   </Button>
                 </Form.Group>

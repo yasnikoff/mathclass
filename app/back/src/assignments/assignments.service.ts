@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import {
@@ -6,11 +6,9 @@ import {
   AssignmentDocument,
   NewAssignment,
   AssignmentItemSchema,
-  SolutionStatus,
 } from 'src/db/schemas/Assignment.schema';
 import { MathTestsService } from 'src/math_tests/math_tests.service';
 import { UserRole } from 'src/utils';
-
 import { AssignmentStatus } from '.';
 
 @Injectable()
@@ -69,7 +67,7 @@ export class AssignmentsService {
         problem,
         solution: '',
         mark: 0,
-        status: SolutionStatus.NEW,
+        status: AssignmentStatus.STUDENTS_DRAFT,
       });
       return item;
     });
@@ -95,8 +93,15 @@ export class AssignmentsService {
     const assignment = await this.assignmentModel.findById(assignmentId);
     const assignmentItem = assignment && assignment.items[problemIndex];
     if (assignmentItem) {
+      if (assignmentItem.status != AssignmentStatus.STUDENTS_DRAFT) {
+        throw new HttpException(
+          `Solution is already submitted for check`,
+          HttpStatus.FORBIDDEN,
+        );
+      }
       assignmentItem.solution = solution;
       assignmentItem.mark = 0;
+      assignmentItem.status = AssignmentStatus.SUBMITTED;
       return await assignment.save();
     }
   }
@@ -106,6 +111,7 @@ export class AssignmentsService {
     const assignmentItem = assignment && assignment.items[problemIndex];
     if (assignmentItem) {
       assignmentItem.mark = mark;
+      assignmentItem.status = AssignmentStatus.CHECKED;
       return await assignment.save();
     }
   }
