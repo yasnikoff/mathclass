@@ -8,7 +8,7 @@ import {
   Spinner,
 } from "react-bootstrap"
 import { Problem } from "../problems/Problem"
-import { useState } from "react"
+import { useState, MouseEvent } from "react"
 import { useAuth } from "../auth/authHooks"
 import { useLazySaveSolutionQuery, useLazySaveMarkQuery } from "../../app/api2"
 import { Assignment, AssignmentItem } from "."
@@ -28,9 +28,10 @@ export function SolutionBox(props: SolutionBoxProps) {
   const [trigger, result] = useLazySaveSolutionQuery()
   const [saveMarkTrigger, saveMarkResult] = useLazySaveMarkQuery()
 
-  async function save(e) {
+  async function save(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
-    e.target.disabled = true
+    const target = e.target as HTMLButtonElement
+    target.disabled = true
     await trigger(
       {
         assignmentId: props.assignmnet._id,
@@ -41,9 +42,10 @@ export function SolutionBox(props: SolutionBoxProps) {
     ).unwrap()
   }
 
-  async function saveMark(e) {
+  async function saveMark(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
-    e.target.disabled = true
+    const target = e.target as HTMLButtonElement
+    target.disabled = true
     await saveMarkTrigger(
       {
         assignmentId: props.assignmnet._id,
