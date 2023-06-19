@@ -28,8 +28,9 @@ export function SolutionBox(props: SolutionBoxProps) {
   const [trigger, result] = useLazySaveSolutionQuery()
   const [saveMarkTrigger, saveMarkResult] = useLazySaveMarkQuery()
 
-  async function save() {
-    // await props.onSave(solution)
+  async function save(e) {
+    e.preventDefault()
+    e.target.disabled = true
     await trigger(
       {
         assignmentId: props.assignmnet._id,
@@ -40,7 +41,9 @@ export function SolutionBox(props: SolutionBoxProps) {
     ).unwrap()
   }
 
-  async function saveMark() {
+  async function saveMark(e) {
+    e.preventDefault()
+    e.target.disabled = true
     await saveMarkTrigger(
       {
         assignmentId: props.assignmnet._id,
@@ -77,27 +80,36 @@ export function SolutionBox(props: SolutionBoxProps) {
             <Row className="my-2">
               {user?.role === "Student" && (
                 <Form.Group>
-                  <Button type="submit" onClick={save}>
+                  <Button onClick={save}>
                     {result?.isLoading ? <Spinner></Spinner> : "Save solution"}
                   </Button>
                 </Form.Group>
               )}
-              <Form.Group style={{width: "150px"}}>
-                
-              {user?.role === "Teacher" && solution && (<>
-                <Form.Label className="ml-2 mt-2">Mark:</Form.Label>
-                  <Form.Control
-                    className="my-4"
-                    as="input"
-                    value={mark}
-                    onChange={(e) => setMark(parseInt(e.target.value))}
-                  ></Form.Control>
-                  <Button type="submit" onClick={saveMark}>
-                    {result?.isLoading ? <Spinner></Spinner> : "Set Mark"}
-                  </Button>
+              <Form.Group style={{ width: "150px" }}>
+                {user?.role === "Teacher" && solution && (
+                  <>
+                    <Form.Label className="ml-2 mt-2">Mark:</Form.Label>
+                    <Form.Control
+                      className="my-4"
+                      as="input"
+                      value={mark}
+                      onChange={(e) => setMark(parseInt(e.target.value))}
+                    ></Form.Control>
+                    <Button onClick={saveMark}>
+                      {saveMarkResult?.isLoading ? (
+                        <Spinner></Spinner>
+                      ) : (
+                        "Set Mark"
+                      )}
+                    </Button>
                   </>
-              )}
-              {user?.role === 'Student' && mark > 0 && (<><Form.Label className="ml-2 mt-2">Mark:</Form.Label><span className="ml-2">{mark}</span></>)}
+                )}
+                {user?.role === "Student" && mark > 0 && (
+                  <>
+                    <Form.Label className="ml-2 mt-2">Mark:</Form.Label>
+                    <span className="ml-2">{mark}</span>
+                  </>
+                )}
               </Form.Group>
             </Row>
           </Card.Body>
