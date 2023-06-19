@@ -43,7 +43,7 @@ export function Assignments() {
               </Accordion.Header>
               <Accordion.Body>
                 {assignment?.items?.map((item, index) => (
-                  <Container className="my-2">
+                  <Container className="my-2" key={index}>
                     <SolutionBox
                       key={index}
                       itemIndex={index}
