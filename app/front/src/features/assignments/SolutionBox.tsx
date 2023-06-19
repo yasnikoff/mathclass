@@ -17,11 +17,12 @@ export function SolutionBox(props: SolutionBoxProps) {
   const [status] = useState(props.item.status)
   const { user } = useAuth()
   const [trigger, saveSolutionResult] = useSaveSolutionMutation()
+  const [savedSolution, setSavedSolution] = useState(props.item.solution)
   const [saveMarkTrigger, saveMarkResult] = useLazySaveMarkQuery()
 
   const formRef = useRef<HTMLFormElement>(null)
 
-  const isDirty = props.item.solution !== solution
+  const isDirty = savedSolution !== solution
 
   async function save(e: MouseEvent<HTMLButtonElement>) {
     await trigger({
@@ -29,6 +30,7 @@ export function SolutionBox(props: SolutionBoxProps) {
       problemIndex: props.itemIndex,
       solution: { math: solution },
     }).unwrap()
+    setSavedSolution(solution)
   }
 
   async function saveMark(e: MouseEvent<HTMLButtonElement>) {
