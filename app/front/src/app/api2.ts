@@ -47,6 +47,13 @@ export const rtkQueryApi = createApi({
         data: solution,
       }),
     }),
+    submitAssignment: builder.mutation<void, { assignmentId: string }>({
+      query: ({ assignmentId }) => ({
+        url: `assignments/${assignmentId}/submit`,
+        method: "PUT",
+      }),
+    }),
+
     saveMark: builder.query<
       void,
       { assignmentId: string; problemIndex: number; mark: number }
@@ -68,4 +75,5 @@ export const {
   useSaveAssignmentMutation,
   useGetAllStudentsQuery,
   useSaveSolutionMutation,
+  useSubmitAssignmentMutation,
 } = rtkQueryApi
