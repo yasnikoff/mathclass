@@ -1,12 +1,4 @@
-import {
-  Form,
-  Container,
-  Card,
-  Button,
-  ButtonGroup,
-  Row,
-  Spinner,
-} from "react-bootstrap"
+import { Form, Container, Card, Button, Row, Spinner } from "react-bootstrap"
 import { Problem } from "../problems/Problem"
 import { useState, MouseEvent } from "react"
 import { useAuth } from "../auth/authHooks"
@@ -14,7 +6,6 @@ import { useLazySaveSolutionQuery, useLazySaveMarkQuery } from "../../app/api2"
 import { Assignment, AssignmentItem } from "."
 
 export type SolutionBoxProps = {
-  //   onSave: (solution: string) => void
   assignment: Assignment
   itemIndex: number
   item: AssignmentItem
@@ -27,6 +18,9 @@ export function SolutionBox(props: SolutionBoxProps) {
   const { user } = useAuth()
   const [trigger, result] = useLazySaveSolutionQuery()
   const [saveMarkTrigger, saveMarkResult] = useLazySaveMarkQuery()
+
+  const isEditable = props.item.status === "students_draft"
+  const attrForEditControls = isEditable ? { disabled: true } : {}
 
   async function save(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
@@ -78,6 +72,7 @@ export function SolutionBox(props: SolutionBoxProps) {
                   className="my-4"
                   as="textarea"
                   value={solution}
+                  {...attrForEditControls}
                   onChange={(e) => setSolution(e.target.value)}
                 ></Form.Control>
               )}
@@ -85,7 +80,7 @@ export function SolutionBox(props: SolutionBoxProps) {
             <Row className="my-2">
               {user?.role === "Student" && (
                 <Form.Group>
-                  <Button onClick={save}>
+                  <Button onClick={save} {...attrForEditControls}>
                     {result?.isLoading ? <Spinner></Spinner> : "Save solution"}
                   </Button>
                 </Form.Group>
