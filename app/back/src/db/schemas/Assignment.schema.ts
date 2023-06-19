@@ -3,13 +3,7 @@ import mongoose, { HydratedDocument } from 'mongoose';
 import { MathTest } from './MathTest.schema';
 import { User } from './User.schema';
 import { Problem } from './Problem.schema';
-
-export enum SolutionStatus {
-  NEW = 'new',
-  SUBMITTED = 'submitted',
-  REJECTED = 'rejected',
-  ACCEPTED = 'accepted',
-}
+import { AssignmentStatus } from 'src/assignments';
 
 export type AssignmentItemDocument = HydratedDocument<AssignmentItem>;
 
@@ -22,7 +16,7 @@ export class AssignmentItem {
   solution: string;
 
   @Prop()
-  status: SolutionStatus;
+  status: AssignmentStatus;
 
   @Prop()
   mark: number;

@@ -42,7 +42,7 @@ export function LoginScreen() {
   }
 
   return (
-    <PageBase requrieAuth={false}>
+    <PageBase requireAuth={false}>
       <Container style={{ width: "500px" }}>
         <Card className="mx-auto mt-5">
           <Card.Body>

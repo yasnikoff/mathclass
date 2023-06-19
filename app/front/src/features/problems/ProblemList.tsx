@@ -64,7 +64,7 @@ export function ProblemList() {
     ))
 
   return (
-    <PageBase requrieAuth={true} roles={["Teacher"]}>
+    <PageBase requireAuth={true} roles={["Teacher"]}>
       <div className="container">
         <Row className="my-3">
           <Col>

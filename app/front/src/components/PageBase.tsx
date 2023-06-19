@@ -9,18 +9,18 @@ import { UserRole } from "../features/users"
 
 export type PageBaseProps = {
   children?: ReactNode
-  requrieAuth: boolean
+  requireAuth: boolean
   isLoading?: boolean
   error?: unknown
   roles?: UserRole[]
 }
 export function PageBase(props: PageBaseProps) {
-  const { user } = useAuth(props.requrieAuth)
+  const { user } = useAuth(props.requireAuth)
   const dispatch = useAppDispatch()
   if (props.isLoading) {
     return <Loading></Loading>
   }
-  if (props.requrieAuth && !user) {
+  if (props.requireAuth && !user) {
     return <LoginScreen></LoginScreen>
   }
   if (
