@@ -61,7 +61,7 @@ export class AssignmentsController {
 
   @Put(':assignmentId/submit')
   @Roles(UserRole.Student)
-  async patchAssignment(@Param('assignmentId') assignmentId) {
+  async submitAssignment(@Param('assignmentId') assignmentId) {
     return this.service.submitAssignment(assignmentId);
   }
 

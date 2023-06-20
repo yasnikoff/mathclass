@@ -106,7 +106,9 @@ export class AssignmentsService {
   }
 
   async submitAssignment(assignmentId: string) {
-    const assignment = await this.assignmentModel.findById(assignmentId);
+    const assignment = await this.assignmentModel.findById(assignmentId, {
+      status: 1,
+    });
     if (!assignment) {
       throw new HttpException(`No assignment found`, HttpStatus.NOT_FOUND);
     }
@@ -119,8 +121,10 @@ export class AssignmentsService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    assignment.status = AssignmentStatus.SUBMITTED;
-    return this.assignmentModel.findByIdAndUpdate(assignment._id, assignment);
+
+    return this.assignmentModel.findByIdAndUpdate(assignmentId, {
+      status: AssignmentStatus.SUBMITTED,
+    });
   }
 
   async setMark(assignmentId: string, problemIndex: number, mark: number) {
