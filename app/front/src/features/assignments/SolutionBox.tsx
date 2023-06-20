@@ -74,21 +74,22 @@ export function SolutionBox(props: SolutionBoxProps) {
               )}
             </Form.Group>
             <Row className="my-2">
-              {user?.role === "Student" && (
-                <Form.Group>
-                  <Button
-                    type="button"
-                    onClick={save}
-                    disabled={!isDirty || !isEditable}
-                  >
-                    {saveSolutionResult?.isLoading ? (
-                      <Spinner></Spinner>
-                    ) : (
-                      "Save"
-                    )}
-                  </Button>
-                </Form.Group>
-              )}
+              {user?.role === "Student" &&
+                props?.assignment?.status === "students_draft" && (
+                  <Form.Group>
+                    <Button
+                      type="button"
+                      onClick={save}
+                      disabled={!isDirty || !isEditable}
+                    >
+                      {saveSolutionResult?.isLoading ? (
+                        <Spinner></Spinner>
+                      ) : (
+                        "Save"
+                      )}
+                    </Button>
+                  </Form.Group>
+                )}
               <Form.Group style={{ width: "150px" }}>
                 {user?.role === "Teacher" &&
                   solution &&
