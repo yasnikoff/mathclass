@@ -93,15 +93,13 @@ export class AssignmentsService {
     const assignment = await this.assignmentModel.findById(assignmentId);
     const assignmentItem = assignment && assignment.items[problemIndex];
     if (assignmentItem) {
-      if (assignmentItem.status != AssignmentStatus.STUDENTS_DRAFT) {
-        throw new HttpException(
-          `Solution is already submitted for check`,
-          HttpStatus.FORBIDDEN,
-        );
-      }
       assignmentItem.solution = solution;
-      assignmentItem.mark = 0;
       return await assignment.save();
+    } else {
+      throw new HttpException(
+        `Solution or assignment not found`,
+        HttpStatus.NOT_FOUND,
+      );
     }
   }
 

@@ -22,6 +22,8 @@ export function SolutionBox(props: SolutionBoxProps) {
   const formRef = useRef<HTMLFormElement>(null)
 
   const isDirty = savedSolution !== solution
+  const isEditable =
+    !props.assignment?.status || props.assignment.status === "students_draft"
 
   async function save(e: MouseEvent<HTMLButtonElement>) {
     await trigger({
@@ -57,48 +59,58 @@ export function SolutionBox(props: SolutionBoxProps) {
           </Card.Header>
           <Card.Body>
             <Form.Group>
-              <Form.Label>Solution:</Form.Label>
+              <Form.Label>
+                {user?.role === "Student" || solution ? "Solution:" : ""}
+              </Form.Label>
               <Problem data={{ math: solution }}></Problem>
               {user?.role === "Student" && (
                 <Form.Control
                   className="my-4"
                   as="textarea"
                   value={solution}
+                  disabled={!isEditable}
                   onChange={(e) => setSolution(e.target.value)}
                 ></Form.Control>
               )}
             </Form.Group>
             <Row className="my-2">
-              {user?.role === "Student" && (
-                <Form.Group>
-                  <Button type="button" onClick={save} disabled={!isDirty}>
-                    {saveSolutionResult?.isLoading ? (
-                      <Spinner></Spinner>
-                    ) : (
-                      "Save"
-                    )}
-                  </Button>
-                </Form.Group>
-              )}
-              <Form.Group style={{ width: "150px" }}>
-                {user?.role === "Teacher" && solution && (
-                  <>
-                    <Form.Label className="ml-2 mt-2">Mark:</Form.Label>
-                    <Form.Control
-                      className="my-4"
-                      as="input"
-                      value={mark}
-                      onChange={(e) => setMark(parseInt(e.target.value))}
-                    ></Form.Control>
-                    <Button onClick={saveMark}>
-                      {saveMarkResult?.isLoading ? (
+              {user?.role === "Student" &&
+                props?.assignment?.status === "students_draft" && (
+                  <Form.Group>
+                    <Button
+                      type="button"
+                      onClick={save}
+                      disabled={!isDirty || !isEditable}
+                    >
+                      {saveSolutionResult?.isLoading ? (
                         <Spinner></Spinner>
                       ) : (
-                        "Set Mark"
+                        "Save"
                       )}
                     </Button>
-                  </>
+                  </Form.Group>
                 )}
+              <Form.Group style={{ width: "150px" }}>
+                {user?.role === "Teacher" &&
+                  solution &&
+                  props.assignment.status === "submitted" && (
+                    <>
+                      <Form.Label className="ml-2 mt-2">Mark:</Form.Label>
+                      <Form.Control
+                        className="my-4"
+                        as="input"
+                        value={mark}
+                        onChange={(e) => setMark(parseInt(e.target.value))}
+                      ></Form.Control>
+                      <Button onClick={saveMark}>
+                        {saveMarkResult?.isLoading ? (
+                          <Spinner></Spinner>
+                        ) : (
+                          "Set Mark"
+                        )}
+                      </Button>
+                    </>
+                  )}
                 {user?.role === "Student" && mark > 0 && (
                   <>
                     <Form.Label className="ml-2 mt-2">Mark:</Form.Label>
