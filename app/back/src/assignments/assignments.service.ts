@@ -101,9 +101,30 @@ export class AssignmentsService {
       }
       assignmentItem.solution = solution;
       assignmentItem.mark = 0;
-      assignmentItem.status = AssignmentStatus.SUBMITTED;
       return await assignment.save();
     }
+  }
+
+  async submitAssignment(assignmentId: string) {
+    const assignment = await this.assignmentModel.findById(assignmentId, {
+      status: 1,
+    });
+    if (!assignment) {
+      throw new HttpException(`No assignment found`, HttpStatus.NOT_FOUND);
+    }
+    if (
+      assignment?.status &&
+      assignment.status !== AssignmentStatus.STUDENTS_DRAFT
+    ) {
+      throw new HttpException(
+        `Only student draft can be submitted`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return this.assignmentModel.findByIdAndUpdate(assignmentId, {
+      status: AssignmentStatus.SUBMITTED,
+    });
   }
 
   async setMark(assignmentId: string, problemIndex: number, mark: number) {
