@@ -1,7 +1,8 @@
 {
     "files.eol": "\n",
     "cSpell.words": [
-        "reduxjs"
+        "reduxjs",
+        "signup"
     ],
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"

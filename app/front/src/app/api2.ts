@@ -37,7 +37,7 @@ export const rtkQueryApi = createApi({
         data,
       }),
     }),
-    saveSolution: builder.query<
+    saveSolution: builder.mutation<
       void,
       { assignmentId: string; problemIndex: number; solution: { math: string } }
     >({
@@ -47,6 +47,13 @@ export const rtkQueryApi = createApi({
         data: solution,
       }),
     }),
+    submitAssignment: builder.mutation<void, { assignmentId: string }>({
+      query: ({ assignmentId }) => ({
+        url: `assignments/${assignmentId}/submit`,
+        method: "PUT",
+      }),
+    }),
+
     saveMark: builder.query<
       void,
       { assignmentId: string; problemIndex: number; mark: number }
@@ -67,5 +74,6 @@ export const {
   useLazySaveMarkQuery,
   useSaveAssignmentMutation,
   useGetAllStudentsQuery,
-  useLazySaveSolutionQuery,
+  useSaveSolutionMutation,
+  useSubmitAssignmentMutation,
 } = rtkQueryApi
