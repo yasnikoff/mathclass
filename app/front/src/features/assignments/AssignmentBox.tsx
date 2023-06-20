@@ -11,6 +11,9 @@ export type AssignmentBoxProps = {
 export function AssignmentBox(props: AssignmentBoxProps) {
   const { user } = useAuth()
   const isStudent = user?.role === "Student"
+  const isTeacher = user?.role === "Teacher"
+
+  const assignment = props.assignment
 
   const [isSubmitted, setIsSubmitted] = useState(
     props?.assignment?.status && props?.assignment?.status !== "students_draft",
@@ -25,11 +28,9 @@ export function AssignmentBox(props: AssignmentBoxProps) {
     await submitAssignmentTrigger({
       assignmentId: props?.assignment?._id,
     }).unwrap()
-
+    assignment.status = "submitted"
     setIsSubmitted(true)
   }
-
-  const assignment = props.assignment
 
   const submitButton =
     isStudent && !isSubmitted ? (
@@ -46,7 +47,15 @@ export function AssignmentBox(props: AssignmentBoxProps) {
     <Accordion.Item key={assignment._id} eventKey={assignment._id}>
       <Accordion.Header>
         <Stack direction="horizontal" gap={3}>
-          <span className="p-2">Assignment:</span> <b>{assignment.caption}</b>
+          <span>Assignment:</span> <b>{assignment.caption}</b>
+          {isTeacher ? (
+            <>
+              <span>Student:</span> <b>{assignment.student.username}</b>
+            </>
+          ) : (
+            ""
+          )}
+          <span>Status:</span> <b>{assignment.status.replace("_", " ")}</b>
         </Stack>
       </Accordion.Header>
       <Accordion.Body>

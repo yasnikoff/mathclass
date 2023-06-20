@@ -22,6 +22,8 @@ export function SolutionBox(props: SolutionBoxProps) {
   const formRef = useRef<HTMLFormElement>(null)
 
   const isDirty = savedSolution !== solution
+  const isEditable =
+    !props.assignment?.status || props.assignment.status === "students_draft"
 
   async function save(e: MouseEvent<HTMLButtonElement>) {
     await trigger({
@@ -64,6 +66,7 @@ export function SolutionBox(props: SolutionBoxProps) {
                   className="my-4"
                   as="textarea"
                   value={solution}
+                  disabled={!isEditable}
                   onChange={(e) => setSolution(e.target.value)}
                 ></Form.Control>
               )}
@@ -71,7 +74,11 @@ export function SolutionBox(props: SolutionBoxProps) {
             <Row className="my-2">
               {user?.role === "Student" && (
                 <Form.Group>
-                  <Button type="button" onClick={save} disabled={!isDirty}>
+                  <Button
+                    type="button"
+                    onClick={save}
+                    disabled={!isDirty || !isEditable}
+                  >
                     {saveSolutionResult?.isLoading ? (
                       <Spinner></Spinner>
                     ) : (
