@@ -59,7 +59,9 @@ export function SolutionBox(props: SolutionBoxProps) {
           </Card.Header>
           <Card.Body>
             <Form.Group>
-              <Form.Label>Solution:</Form.Label>
+              <Form.Label>
+                {user?.role === "Student" || solution ? "Solution:" : ""}
+              </Form.Label>
               <Problem data={{ math: solution }}></Problem>
               {user?.role === "Student" && (
                 <Form.Control
