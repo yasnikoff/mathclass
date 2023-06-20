@@ -90,24 +90,26 @@ export function SolutionBox(props: SolutionBoxProps) {
                 </Form.Group>
               )}
               <Form.Group style={{ width: "150px" }}>
-                {user?.role === "Teacher" && solution && (
-                  <>
-                    <Form.Label className="ml-2 mt-2">Mark:</Form.Label>
-                    <Form.Control
-                      className="my-4"
-                      as="input"
-                      value={mark}
-                      onChange={(e) => setMark(parseInt(e.target.value))}
-                    ></Form.Control>
-                    <Button onClick={saveMark}>
-                      {saveMarkResult?.isLoading ? (
-                        <Spinner></Spinner>
-                      ) : (
-                        "Set Mark"
-                      )}
-                    </Button>
-                  </>
-                )}
+                {user?.role === "Teacher" &&
+                  solution &&
+                  props.assignment.status === "submitted" && (
+                    <>
+                      <Form.Label className="ml-2 mt-2">Mark:</Form.Label>
+                      <Form.Control
+                        className="my-4"
+                        as="input"
+                        value={mark}
+                        onChange={(e) => setMark(parseInt(e.target.value))}
+                      ></Form.Control>
+                      <Button onClick={saveMark}>
+                        {saveMarkResult?.isLoading ? (
+                          <Spinner></Spinner>
+                        ) : (
+                          "Set Mark"
+                        )}
+                      </Button>
+                    </>
+                  )}
                 {user?.role === "Student" && mark > 0 && (
                   <>
                     <Form.Label className="ml-2 mt-2">Mark:</Form.Label>
