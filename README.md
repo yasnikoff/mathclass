@@ -9,5 +9,3 @@ Assignment has a part next to each Problem where Student can write their solutio
 Teacher can observe solutions and either reject or approve them.
 
 The application fetures authentication and role-based authorization.
-
-[Live demo](https://lobster-app-zkudl.ondigitalocean.app/)
